@@ -55,7 +55,7 @@ namespace DrawingPlugin
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(246, 107);
+            this.button1.Location = new System.Drawing.Point(267, 269);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(159, 85);
             this.button1.TabIndex = 0;
@@ -65,7 +65,7 @@ namespace DrawingPlugin
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(33, 269);
+            this.button2.Location = new System.Drawing.Point(57, 122);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(159, 85);
             this.button2.TabIndex = 0;
@@ -75,7 +75,7 @@ namespace DrawingPlugin
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(33, 107);
+            this.button3.Location = new System.Drawing.Point(267, 122);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(159, 85);
             this.button3.TabIndex = 0;
@@ -95,7 +95,7 @@ namespace DrawingPlugin
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(513, 107);
+            this.button5.Location = new System.Drawing.Point(509, 269);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(159, 85);
             this.button5.TabIndex = 0;
@@ -103,31 +103,31 @@ namespace DrawingPlugin
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // changeColor
+            // 
+            this.changeColor.Location = new System.Drawing.Point(57, 269);
+            this.changeColor.Name = "changeColor";
+            this.changeColor.Size = new System.Drawing.Size(159, 85);
+            this.changeColor.TabIndex = 0;
+            this.changeColor.Text = "Change Color";
+            this.changeColor.UseVisualStyleBackColor = true;
+            this.changeColor.Click += new System.EventHandler(this.CallColorMenu);
+            // 
             // copyButton
             // 
-            this.copyButton.Location = new System.Drawing.Point(513, 269);
+            this.copyButton.Location = new System.Drawing.Point(509, 122);
             this.copyButton.Name = "copyButton";
             this.copyButton.Size = new System.Drawing.Size(159, 85);
             this.copyButton.TabIndex = 0;
             this.copyButton.Text = "Copy To Data Base";
             this.copyButton.UseVisualStyleBackColor = true;
             this.copyButton.Click += new System.EventHandler(this.copyButton_Click);
-            //
-            //changeColor
-            //
-            this.changeColor.Location = new System.Drawing.Point(513, 107);
-            this.changeColor.Name = "changeColor";
-            this.changeColor.Size = new System.Drawing.Size(159, 85);
-            this.changeColor.TabIndex = 0;
-            this.changeColor.Text = "Change Color";
-            this.changeColor.UseVisualStyleBackColor = true;
-            this.changeColor.Click += new EventHandler(this.CallColorMenu);
             // 
             // textBox1
             // 
             this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBox1.BackColor = System.Drawing.Color.White;
-            this.textBox1.Font = new System.Drawing.Font("Arial", 18F);
+            this.textBox1.Font = new System.Drawing.Font("Britannic Bold", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(166, 20);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -155,6 +155,7 @@ namespace DrawingPlugin
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.copyButton);
+            this.Controls.Add(this.changeColor);
             this.Controls.Add(this.textBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainMenu";
