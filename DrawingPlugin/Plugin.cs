@@ -61,58 +61,8 @@ namespace DrawingPlugin{
         [CommandMethod("Regular")]
         public void DrawRegularFigure()
         {
-
             Form1 Form = new Form1();
             Autodesk.AutoCAD.ApplicationServices.Application.ShowModelessDialog(Form);
-            //Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-            //Editor editor = doc.Editor;
-
-            //PromptIntegerOptions question = new PromptIntegerOptions("Введите количество сторон n-угольника");
-            //PromptIntegerResult resQuestion = editor.GetInteger(question);
-
-            //PromptPointOptions point = new PromptPointOptions("Введите точку левого нижнего угла прямоугольника:\n");
-            //PromptPointResult resPoint = editor.GetPoint(point);
-            //Point3d point3D = resPoint.Value;
-            //Point2d point2D = new Point2d(point3D.X, point3D.Y);
-
-            //PromptDoubleOptions len = new PromptDoubleOptions("Введите длину стороны прямоугольника:\n");
-            //PromptDoubleResult resLength = editor.GetDouble(len);
-
-            //Database db = doc.Database;
-            //    using (Transaction tr = db.TransactionManager.StartTransaction())
-            //    {
-            //        BlockTable bt = tr.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
-            //        BlockTableRecord btr = tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
-
-            //        Autodesk.AutoCAD.DatabaseServices.Polyline polyline = new Autodesk.AutoCAD.DatabaseServices.Polyline();
-            //        int quantityOfVertexes = resQuestion.Value;
-
-            //        double radius = resLength.Value / (2 * (Math.Sin(Math.PI / quantityOfVertexes)));
-
-            //        double centerX = point2D.X + radius * Math.Cos((90 - 360 / (2*quantityOfVertexes)) * (Math.PI / 180));
-            //        double centerY = point2D.Y + radius * Math.Sin((90 - 360 / (2*quantityOfVertexes)) * (Math.PI / 180)); ;
-
-
-
-            //        for (int i = 0; i < quantityOfVertexes; i++)
-            //        {
-            //            double angle = (i) * ((360 / quantityOfVertexes)) * (Math.PI / 180);
-            //            double x = centerX + radius * Math.Cos(angle - Math.PI / quantityOfVertexes);
-            //            double y = centerY + radius * Math.Sin(angle - Math.PI / quantityOfVertexes);
-
-            //            polyline.AddVertexAt(i, new Point2d(x, y), 0, 0, 0);
-            //        }
-
-            //        polyline.ColorIndex = 3;
-            //        polyline.Closed = true;
-
-
-            //        btr.AppendEntity(polyline);
-            //        tr.AddNewlyCreatedDBObject(polyline, true);
-
-            //        tr.Commit();
-            //    }
-
         }
 
         [CommandMethod("Line")]
@@ -225,8 +175,6 @@ namespace DrawingPlugin{
             ed.WriteMessage("\nОбъекты (линии, полилинии, сплайны, дуги) успешно экспортированы в " + savePath);
         }
 
-
-
         [CommandMethod("InsertToLIST")]
         public void InsertPolylinesFromDWG()
         {
@@ -289,13 +237,6 @@ namespace DrawingPlugin{
             {
                 ed.WriteMessage($"\nОшибка: {ex.Message}");
             }
-        }
-            [CommandMethod("GetIndex")]
-        public void GetIndex() {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-            Editor editor = doc.Editor;
-
-
         }
 
         [CommandMethod("Square")]
