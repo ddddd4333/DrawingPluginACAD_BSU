@@ -1,4 +1,6 @@
-﻿namespace DrawingPlugin
+﻿using System;
+
+namespace DrawingPlugin
 {
     partial class MainMenu
     {
@@ -10,10 +12,12 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button changeColor;
         private System.Windows.Forms.Button copyButton;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button5;
+        
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
@@ -43,6 +47,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.changeColor = new System.Windows.Forms.Button();
             this.copyButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -107,6 +112,16 @@
             this.copyButton.Text = "Copy To Data Base";
             this.copyButton.UseVisualStyleBackColor = true;
             this.copyButton.Click += new System.EventHandler(this.copyButton_Click);
+            //
+            //changeColor
+            //
+            this.changeColor.Location = new System.Drawing.Point(513, 107);
+            this.changeColor.Name = "changeColor";
+            this.changeColor.Size = new System.Drawing.Size(159, 85);
+            this.changeColor.TabIndex = 0;
+            this.changeColor.Text = "Change Color";
+            this.changeColor.UseVisualStyleBackColor = true;
+            this.changeColor.Click += new EventHandler(this.CallColorMenu);
             // 
             // textBox1
             // 

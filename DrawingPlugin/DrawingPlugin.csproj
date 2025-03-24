@@ -49,6 +49,12 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ChangeColour.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeColour.Designer.cs">
+      <DependentUpon>ChangeColour.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
