@@ -72,13 +72,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="accoremgd">
-      <HintPath>..\..\..\AutoCad\AutoCAD 2021\accoremgd.dll</HintPath>
+      <HintPath>D:\AutoCad\AutoCAD 2021\accoremgd.dll</HintPath>
     </Reference>
-    <Reference Include="acdbmgd">
-      <HintPath>..\..\..\AutoCad\AutoCAD 2021\acdbmgd.dll</HintPath>
+    <Reference Include="Acdbmgd">
+      <HintPath>D:\AutoCad\AutoCAD 2021\acdbmgd.dll</HintPath>
     </Reference>
-    <Reference Include="acmgd">
-      <HintPath>..\..\..\AutoCad\AutoCAD 2021\acmgd.dll</HintPath>
+    <Reference Include="Acmgd">
+      <HintPath>D:\AutoCad\AutoCAD 2021\acmgd.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
