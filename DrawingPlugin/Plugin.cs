@@ -53,6 +53,8 @@ namespace DrawingPlugin{
 
                     polyline.AddVertexAt(i, new Point2d(x, y), 0, 0, 0);
                 }
+
+                polyline.Thickness = 1;
                 polyline.ColorIndex = color;
                 polyline.Closed = true;
 
@@ -94,6 +96,8 @@ namespace DrawingPlugin{
                 Autodesk.AutoCAD.DatabaseServices.Polyline polyline = new Autodesk.AutoCAD.DatabaseServices.Polyline();
                 polyline.AddVertexAt(0, firp, 0, 0, 0);
                 polyline.AddVertexAt(1, secp, 0, 0, 0);
+
+                polyline.Thickness = 1;
                 polyline.ColorIndex = color;
                 polyline.Closed=true;
 
@@ -277,6 +281,7 @@ namespace DrawingPlugin{
                 square.AddVertexAt(2, new Point2d(X + reLength.Value, Y + reLength.Value), 0, 0, 0);
                 square.AddVertexAt(3, new Point2d(X + reLength.Value, Y), 0, 0, 0);
 
+                square.Thickness = 1;
                 square.ColorIndex = color;
                 square.Closed = true;
 
@@ -309,20 +314,20 @@ namespace DrawingPlugin{
                 BlockTable bt = tr.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
                 BlockTableRecord btr = tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-                Autodesk.AutoCAD.DatabaseServices.Polyline square = new Autodesk.AutoCAD.DatabaseServices.Polyline();
+                Autodesk.AutoCAD.DatabaseServices.Polyline triangle = new Autodesk.AutoCAD.DatabaseServices.Polyline();
 
 
 
-                square.AddVertexAt(0, new Point2d(X, Y), 0, 0, 0);
-                square.AddVertexAt(1, new Point2d(X + reLength.Value/2, Y + reLength.Value * Math.Sqrt(3)/2), 0, 0, 0);
-                square.AddVertexAt(2, new Point2d(X + reLength.Value, Y), 0, 0, 0);
-                
+                triangle.AddVertexAt(0, new Point2d(X, Y), 0, 0, 0);
+                triangle.AddVertexAt(1, new Point2d(X + reLength.Value/2, Y + reLength.Value * Math.Sqrt(3)/2), 0, 0, 0);
+                triangle.AddVertexAt(2, new Point2d(X + reLength.Value, Y), 0, 0, 0);
 
-                square.ColorIndex = color;
-                square.Closed = true;
+                triangle.Thickness = 1;
+                triangle.ColorIndex = color;
+                triangle.Closed = true;
 
-                btr.AppendEntity(square);
-                tr.AddNewlyCreatedDBObject(square, true);
+                btr.AppendEntity(triangle);
+                tr.AddNewlyCreatedDBObject(triangle, true);
 
                 tr.Commit();
             }
@@ -351,22 +356,22 @@ namespace DrawingPlugin{
                 BlockTable bt = tr.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
                 BlockTableRecord btr = tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-                Autodesk.AutoCAD.DatabaseServices.Polyline square = new Autodesk.AutoCAD.DatabaseServices.Polyline();
+                Autodesk.AutoCAD.DatabaseServices.Polyline pentagon = new Autodesk.AutoCAD.DatabaseServices.Polyline();
 
 
 
-                square.AddVertexAt(0, new Point2d(X, Y), 0, 0, 0);
-                square.AddVertexAt(1, new Point2d(X + reLength.Value, Y), 0, 0, 0);
-                square.AddVertexAt(2, new Point2d(X + reLength.Value + reLength.Value*Math.Cos(MathematicalOperations.DegToRad(72.0)), Y+reLength.Value*Math.Sin(MathematicalOperations.DegToRad(72.0))), 0, 0, 0);
-                square.AddVertexAt(3, new Point2d(X + reLength.Value/2, Y + reLength.Value * Math.Sqrt(5+2*Math.Sqrt(5))/2), 0, 0, 0);
-                square.AddVertexAt(4, new Point2d(X - reLength.Value * Math.Cos(MathematicalOperations.DegToRad(72.0)), Y + reLength.Value * Math.Sin(MathematicalOperations.DegToRad(72.0))), 0, 0, 0);
+                pentagon.AddVertexAt(0, new Point2d(X, Y), 0, 0, 0);
+                pentagon.AddVertexAt(1, new Point2d(X + reLength.Value, Y), 0, 0, 0);
+                pentagon.AddVertexAt(2, new Point2d(X + reLength.Value + reLength.Value*Math.Cos(MathematicalOperations.DegToRad(72.0)), Y+reLength.Value*Math.Sin(MathematicalOperations.DegToRad(72.0))), 0, 0, 0);
+                pentagon.AddVertexAt(3, new Point2d(X + reLength.Value/2, Y + reLength.Value * Math.Sqrt(5+2*Math.Sqrt(5))/2), 0, 0, 0);
+                pentagon.AddVertexAt(4, new Point2d(X - reLength.Value * Math.Cos(MathematicalOperations.DegToRad(72.0)), Y + reLength.Value * Math.Sin(MathematicalOperations.DegToRad(72.0))), 0, 0, 0);
 
+                pentagon.Thickness = 1;
+                pentagon.ColorIndex = color;
+                pentagon.Closed = true;
 
-                square.ColorIndex = color;
-                square.Closed = true;
-
-                btr.AppendEntity(square);
-                tr.AddNewlyCreatedDBObject(square, true);
+                btr.AppendEntity(pentagon);
+                tr.AddNewlyCreatedDBObject(pentagon, true);
 
                 tr.Commit();
             }
@@ -394,23 +399,23 @@ namespace DrawingPlugin{
                 BlockTable bt = tr.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
                 BlockTableRecord btr = tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-                Autodesk.AutoCAD.DatabaseServices.Polyline square = new Autodesk.AutoCAD.DatabaseServices.Polyline();
+                Autodesk.AutoCAD.DatabaseServices.Polyline hexagon = new Autodesk.AutoCAD.DatabaseServices.Polyline();
 
 
 
-                square.AddVertexAt(0, new Point2d(X, Y), 0, 0, 0);
-                square.AddVertexAt(1, new Point2d(X + reLength.Value, Y), 0, 0, 0);
-                square.AddVertexAt(2, new Point2d(X + reLength.Value + reLength.Value * Math.Cos(MathematicalOperations.DegToRad(60)), Y + reLength.Value * Math.Sin(MathematicalOperations.DegToRad(60))), 0, 0, 0);
-                square.AddVertexAt(3, new Point2d(X+ reLength.Value, Y + 2*reLength.Value * Math.Sin(MathematicalOperations.DegToRad(60))), 0, 0, 0);
-                square.AddVertexAt(4, new Point2d(X, Y + 2*reLength.Value*Math.Sin(MathematicalOperations.DegToRad(60))), 0, 0, 0);
-                square.AddVertexAt(5, new Point2d(X - reLength.Value * Math.Cos(MathematicalOperations.DegToRad(60)), Y + reLength.Value * Math.Sin(MathematicalOperations.DegToRad(60))), 0, 0, 0);
+                hexagon.AddVertexAt(0, new Point2d(X, Y), 0, 0, 0);
+                hexagon.AddVertexAt(1, new Point2d(X + reLength.Value, Y), 0, 0, 0);
+                hexagon.AddVertexAt(2, new Point2d(X + reLength.Value + reLength.Value * Math.Cos(MathematicalOperations.DegToRad(60)), Y + reLength.Value * Math.Sin(MathematicalOperations.DegToRad(60))), 0, 0, 0);
+                hexagon.AddVertexAt(3, new Point2d(X+ reLength.Value, Y + 2*reLength.Value * Math.Sin(MathematicalOperations.DegToRad(60))), 0, 0, 0);
+                hexagon.AddVertexAt(4, new Point2d(X, Y + 2*reLength.Value*Math.Sin(MathematicalOperations.DegToRad(60))), 0, 0, 0);
+                hexagon.AddVertexAt(5, new Point2d(X - reLength.Value * Math.Cos(MathematicalOperations.DegToRad(60)), Y + reLength.Value * Math.Sin(MathematicalOperations.DegToRad(60))), 0, 0, 0);
 
+                hexagon.Thickness = 1;
+                hexagon.ColorIndex = color;
+                hexagon.Closed = true;
 
-                square.ColorIndex = color;
-                square.Closed = true;
-
-                btr.AppendEntity(square);
-                tr.AddNewlyCreatedDBObject(square, true);
+                btr.AppendEntity(hexagon);
+                tr.AddNewlyCreatedDBObject(hexagon, true);
 
                 tr.Commit();
             }

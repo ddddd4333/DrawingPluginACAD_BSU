@@ -15,6 +15,9 @@ namespace DrawingPlugin
         private System.Windows.Forms.Button cyanButton;
         private System.Windows.Forms.Button magentaButton;
         private System.Windows.Forms.Button whiteButton;
+        private System.Windows.Forms.Button submitButton;
+        private System.Windows.Forms.NumericUpDown thicknessInput;
+        private System.Windows.Forms.Label inf;
         private System.ComponentModel.Container components = null;
 
         /// <summary>
@@ -46,6 +49,9 @@ namespace DrawingPlugin
             this.cyanButton = new System.Windows.Forms.Button();
             this.magentaButton = new System.Windows.Forms.Button();
             this.whiteButton = new System.Windows.Forms.Button();
+            this.submitButton = new System.Windows.Forms.Button();
+            this.thicknessInput = new System.Windows.Forms.NumericUpDown();
+            this.inf = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
@@ -118,6 +124,34 @@ namespace DrawingPlugin
             this.whiteButton.Text = "White";
             this.whiteButton.UseVisualStyleBackColor = true;
             this.whiteButton.Click += new System.EventHandler(this.White_Change);
+            //
+            //submitButton
+            //
+            this.submitButton.Location = new System.Drawing.Point(276, 283);
+            this.submitButton.Name = "submitButton";
+            this.submitButton.Size = new System.Drawing.Size(159, 85);
+            this.submitButton.TabIndex = 7;
+            this.submitButton.Text = "Submit";
+            this.submitButton.UseVisualStyleBackColor = true;
+            //
+            //inf
+            //
+            this.inf.Location = new System.Drawing.Point(25, 283);
+            this.inf.Name = "inf";
+            this.inf.Size = new System.Drawing.Size(159, 85);
+            this.inf.TabIndex = 8;
+            this.inf.Text = "Enter Thickness";
+            this.inf.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            //
+            //thickness imput
+            //
+            this.thicknessInput.Location = new System.Drawing.Point(25, 243);
+            this.thicknessInput.Name = "thicknessInput";
+            this.thicknessInput.Size = new System.Drawing.Size(159, 20);
+            this.thicknessInput.TabIndex = 9;
+            this.thicknessInput.Maximum = decimal.MaxValue;
+            this.thicknessInput.Minimum = decimal.MinValue;
+            this.thicknessInput.Value = (decimal)defaultValue;
             // 
             // textBox1
             // 
