@@ -61,7 +61,7 @@ namespace DrawingPlugin{
         [CommandMethod("Regular")]
         public void DrawRegularFigure()
         {
-            Form1 Form = new Form1();
+            RegFiguresMenu Form = new RegFiguresMenu();
             Autodesk.AutoCAD.ApplicationServices.Application.ShowModelessDialog(Form);
         }
 

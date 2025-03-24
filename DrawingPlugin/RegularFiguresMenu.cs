@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace DrawingPlugin
 {
-    public partial class Form1: Form
+    public partial class RegFiguresMenu : Form
     {
 
         private void RunACADCommand(string command)
@@ -24,7 +24,7 @@ namespace DrawingPlugin
                 MessageBox.Show("Ошибка выполнения команды: " + ex.Message);
             }
         }
-        public Form1()
+        public RegFiguresMenu()
         {
             InitializeComponent();
         }
