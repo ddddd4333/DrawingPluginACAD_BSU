@@ -67,6 +67,10 @@ namespace DrawingPlugin
 
         }
 
+        private void CallColorMenu(object sender, EventArgs e)
+        {
+            RunACADCommand("Color");
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
 

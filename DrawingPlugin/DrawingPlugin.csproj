@@ -49,6 +49,12 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ChangeColour.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeColour.Designer.cs">
+      <DependentUpon>ChangeColour.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -72,13 +78,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="accoremgd">
-      <HintPath>..\..\..\AutoCad\AutoCAD 2021\accoremgd.dll</HintPath>
+      <HintPath>D:\AutoCad\AutoCAD 2021\accoremgd.dll</HintPath>
     </Reference>
-    <Reference Include="acdbmgd">
-      <HintPath>..\..\..\AutoCad\AutoCAD 2021\acdbmgd.dll</HintPath>
+    <Reference Include="Acdbmgd">
+      <HintPath>D:\AutoCad\AutoCAD 2021\acdbmgd.dll</HintPath>
     </Reference>
-    <Reference Include="acmgd">
-      <HintPath>..\..\..\AutoCad\AutoCAD 2021\acmgd.dll</HintPath>
+    <Reference Include="Acmgd">
+      <HintPath>D:\AutoCad\AutoCAD 2021\acmgd.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

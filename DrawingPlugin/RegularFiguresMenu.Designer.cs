@@ -2,7 +2,7 @@
 
 namespace DrawingPlugin
 {
-    partial class Form1 : Form
+    partial class RegFiguresMenu : Form
     {
         /// <summary>
         /// Required designer variable.
@@ -35,7 +35,7 @@ namespace DrawingPlugin
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegFiguresMenu));
             this.triangleButton = new System.Windows.Forms.Button();
             this.pentagonButton = new System.Windows.Forms.Button();
             this.hexagonButton = new System.Windows.Forms.Button();
