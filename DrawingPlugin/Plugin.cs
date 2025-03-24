@@ -150,58 +150,56 @@ namespace DrawingPlugin{
         [CommandMethod("CopyToDB")]
         public void ExportLinesPolylinesSplinesArcsToDWG()
         {
-            // Получение текущего документа, базы данных и редактора
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
             Editor ed = doc.Editor;
 
-            // Настройка фильтра выбора для линий, полилиний, сплайнов и дуг
             TypedValue[] filter = new TypedValue[]
             {
             new TypedValue(-4, "<OR"),
-            new TypedValue((int)DxfCode.Start, "LINE"),       // Линия
-            new TypedValue((int)DxfCode.Start, "LWPOLYLINE"), // Полилиния
-            new TypedValue((int)DxfCode.Start, "SPLINE"),     // Сплайн
-            new TypedValue((int)DxfCode.Start, "ARC"),        // Дуга
+            new TypedValue((int)DxfCode.Start, "LINE"),      
+            new TypedValue((int)DxfCode.Start, "LWPOLYLINE"), 
+            new TypedValue((int)DxfCode.Start, "SPLINE"),     
+            new TypedValue((int)DxfCode.Start, "ARC"),        
             new TypedValue(-4, "OR>")
             };
             SelectionFilter selectionFilter = new SelectionFilter(filter);
 
-            // Запрос выбора объектов у пользователя
+          
             PromptSelectionResult selectionResult = ed.GetSelection(selectionFilter);
 
-            // Проверка, были ли выбраны объекты
+            
             if (selectionResult.Status != PromptStatus.OK)
             {
                 ed.WriteMessage("\nНет выбранных объектов указанных типов.");
                 return;
             }
 
-            // Указание пути для сохранения нового DWG-файла
+            
             string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "ExportedObjects.dwg");
 
-            // Создание новой базы данных для нового чертежа
+            
             using (Database newDb = new Database(true, true))
             {
                 using (Transaction tr = newDb.TransactionManager.StartTransaction())
                 {
-                    // Получение таблицы блоков и пространства модели нового чертежа
+                   
                     BlockTable newBlockTable = (BlockTable)tr.GetObject(newDb.BlockTableId, OpenMode.ForRead);
                     BlockTableRecord newModelSpace = (BlockTableRecord)tr.GetObject(newBlockTable[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
-                    // Коллекция для хранения ObjectId выбранных объектов
+                  
                     ObjectIdCollection objIds = new ObjectIdCollection();
 
-                    // Транзакция для работы с текущей базой данных
+                
                     using (Transaction oldTr = db.TransactionManager.StartTransaction())
                     {
                         foreach (SelectedObject selObj in selectionResult.Value)
                         {
                             if (selObj != null)
                             {
-                                // Получение объекта как Entity
+                             
                                 Entity entity = oldTr.GetObject(selObj.ObjectId, OpenMode.ForRead) as Entity;
-                                // Проверка типа объекта
+                                
                                 if (entity is Line || entity is Polyline || entity is Spline || entity is Arc)
                                 {
                                     objIds.Add(entity.ObjectId);
@@ -211,19 +209,18 @@ namespace DrawingPlugin{
                         oldTr.Commit();
                     }
 
-                    // Клонирование объектов в новое пространство модели
+                    
                     IdMapping idMapping = new IdMapping();
                     db.WblockCloneObjects(objIds, newModelSpace.ObjectId, idMapping, DuplicateRecordCloning.Ignore, false);
 
-                    // Завершение транзакции
+                   
                     tr.Commit();
                 }
 
-                // Сохранение нового DWG-файла (версия AutoCAD 2021)
                 newDb.SaveAs(savePath, DwgVersion.AC1027);
             }
 
-            // Обновление экрана и вывод сообщения об успехе
+   
             doc.TransactionManager.QueueForGraphicsFlush();
             ed.WriteMessage("\nОбъекты (линии, полилинии, сплайны, дуги) успешно экспортированы в " + savePath);
         }
@@ -233,14 +230,13 @@ namespace DrawingPlugin{
         [CommandMethod("InsertToLIST")]
         public void InsertPolylinesFromDWG()
         {
-            // Получаем текущий документ и базу данных
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database destDb = doc.Database;
             Editor ed = doc.Editor;
 
             try
             {
-                // Запрашиваем путь к исходному DWG файлу
+                
                 PromptOpenFileOptions pfo = new PromptOpenFileOptions("Выберите DWG файл с полилиниями")
                 {
                     Filter = "DWG файлы (*.dwg)|*.dwg"
@@ -251,28 +247,24 @@ namespace DrawingPlugin{
 
                 string sourceDwgPath = pfr.StringResult;
 
-                // Открываем исходную базу данных DWG
                 using (Database sourceDb = new Database(false, true))
                 {
                     sourceDb.ReadDwgFile(sourceDwgPath, FileOpenMode.OpenForReadAndAllShare, true, "");
 
                     using (Transaction tr = destDb.TransactionManager.StartTransaction())
                     {
-                        // Получаем пространство модели целевого чертежа
+                      
                         BlockTable bt = tr.GetObject(destDb.BlockTableId, OpenMode.ForRead) as BlockTable;
                         BlockTableRecord btr = tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-                        // Создаем коллекцию для импорта объектов
                         ObjectIdCollection ids = new ObjectIdCollection();
 
-                        // Открываем пространство модели исходного чертежа
                         using (Transaction sourceTr = sourceDb.TransactionManager.StartTransaction())
                         {
                             BlockTable sourceBt = sourceTr.GetObject(sourceDb.BlockTableId, OpenMode.ForRead) as BlockTable;
                             BlockTableRecord sourceBtr = sourceTr.GetObject(sourceBt[BlockTableRecord.ModelSpace],
                                 OpenMode.ForRead) as BlockTableRecord;
 
-                            // Собираем все полилинии из исходного чертежа
                             foreach (ObjectId objId in sourceBtr)
                             {
                                 Entity ent = sourceTr.GetObject(objId, OpenMode.ForRead) as Entity;
@@ -284,7 +276,6 @@ namespace DrawingPlugin{
                             sourceTr.Commit();
                         }
 
-                        // Копируем полилинии в целевой чертеж
                         IdMapping mapping = new IdMapping();
                         sourceDb.WblockCloneObjects(ids, btr.ObjectId, mapping, DuplicateRecordCloning.Ignore, false);
 
