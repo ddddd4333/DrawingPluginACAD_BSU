@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace DrawingPlugin
 {
@@ -121,7 +122,6 @@ namespace DrawingPlugin
             // 
             // textBox1
             // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.HotTrack;
             this.textBox1.Font = new System.Drawing.Font("Old English Text MT", 28F, System.Drawing.FontStyle.Bold);
             this.textBox1.Location = new System.Drawing.Point(359, 79);
             this.textBox1.Name = "textBox1";
