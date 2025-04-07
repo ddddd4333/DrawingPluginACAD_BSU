@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrawingPlugin
+namespace DrawingPlugin.Main
 {
     public class MathematicalOperations
     {

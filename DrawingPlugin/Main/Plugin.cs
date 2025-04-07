@@ -7,7 +7,7 @@ using System.IO;
 using DrawingPlugin.PluginCommands;
 
 
-namespace DrawingPlugin{
+namespace DrawingPlugin.Main{
 
     public class plugin : IExtensionApplication
     {
@@ -33,83 +33,12 @@ namespace DrawingPlugin{
         {
             PluginRegularFigures.Lines();
         }
-        
+
         [CommandMethod("CopyToDB")]
-        public void ExportLinesPolylinesSplinesArcsToDWG()
+        public void CopyToDB()
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-            Database db = doc.Database;
-            Editor ed = doc.Editor;
-
-            TypedValue[] filter = new TypedValue[]
-            {
-            new TypedValue(-4, "<OR"),
-            new TypedValue((int)DxfCode.Start, "LINE"),      
-            new TypedValue((int)DxfCode.Start, "LWPOLYLINE"), 
-            new TypedValue((int)DxfCode.Start, "SPLINE"),     
-            new TypedValue((int)DxfCode.Start, "ARC"),        
-            new TypedValue(-4, "OR>")
-            };
-            SelectionFilter selectionFilter = new SelectionFilter(filter);
-
-          
-            PromptSelectionResult selectionResult = ed.GetSelection(selectionFilter);
-
-            
-            if (selectionResult.Status != PromptStatus.OK)
-            {
-                ed.WriteMessage("\nНет выбранных объектов указанных типов.");
-                return;
-            }
-
-            
-            string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "ExportedObjects.dwg");
-
-            
-            using (Database newDb = new Database(true, true))
-            {
-                using (Transaction tr = newDb.TransactionManager.StartTransaction())
-                {
-                   
-                    BlockTable newBlockTable = (BlockTable)tr.GetObject(newDb.BlockTableId, OpenMode.ForRead);
-                    BlockTableRecord newModelSpace = (BlockTableRecord)tr.GetObject(newBlockTable[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-
-                  
-                    ObjectIdCollection objIds = new ObjectIdCollection();
-
-                
-                    using (Transaction oldTr = db.TransactionManager.StartTransaction())
-                    {
-                        foreach (SelectedObject selObj in selectionResult.Value)
-                        {
-                            if (selObj != null)
-                            {
-                             
-                                Entity entity = oldTr.GetObject(selObj.ObjectId, OpenMode.ForRead) as Entity;
-                                
-                                if (entity is Line || entity is Polyline || entity is Spline || entity is Arc)
-                                {
-                                    objIds.Add(entity.ObjectId);
-                                }
-                            }
-                        }
-                        oldTr.Commit();
-                    }
-
-                    
-                    IdMapping idMapping = new IdMapping();
-                    db.WblockCloneObjects(objIds, newModelSpace.ObjectId, idMapping, DuplicateRecordCloning.Ignore, false);
-
-                   
-                    tr.Commit();
-                }
-
-                newDb.SaveAs(savePath, DwgVersion.AC1027);
-            }
-
-   
-            doc.TransactionManager.QueueForGraphicsFlush();
-            ed.WriteMessage("\nОбъекты (линии, полилинии, сплайны, дуги) успешно экспортированы в " + savePath);
+            InsertFunctionality copy = new InsertFunctionality();
+            copy.ExportGeometry();
         }
 
         [CommandMethod("InsertToLIST")]

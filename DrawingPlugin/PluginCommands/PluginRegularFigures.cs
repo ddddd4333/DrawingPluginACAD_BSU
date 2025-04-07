@@ -3,6 +3,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using System;
+using DrawingPlugin.Main;
 
 namespace DrawingPlugin.PluginCommands
 {
