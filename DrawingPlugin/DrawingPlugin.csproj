@@ -49,30 +49,33 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ChangeColour.cs">
+    <Compile Include="Forms\ChangeColour.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChangeColour.Designer.cs">
+    <Compile Include="Forms\ChangeColour.Designer.cs">
       <DependentUpon>ChangeColour.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RegularFiguresMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RegularFiguresMenu.Designer.cs">
+      <DependentUpon>RegularFiguresMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main\MathematicalOperations.cs" />
+    <Compile Include="Main\Plugin.cs" />
+    <Compile Include="PluginCommands\InsertFunctionality.cs" />
+    <Compile Include="PluginCommands\PluginCommandsMenues.cs" />
+    <Compile Include="PluginCommands\PluginRegularFigures.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RegularFiguresMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RegularFiguresMenu.Designer.cs">
-      <DependentUpon>RegularFiguresMenu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Plugin.cs" />
-    <Compile Include="MathematicalOperations.cs" />
-    <Compile Include="MainMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainMenu.Designer.cs">
-      <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -93,18 +96,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChangeColour.resx">
+    <EmbeddedResource Include="Forms\ChangeColour.resx">
       <DependentUpon>ChangeColour.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainMenu.resx">
+    <EmbeddedResource Include="Forms\MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RegularFiguresMenu.resx">
+      <DependentUpon>RegularFiguresMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RegularFiguresMenu.resx">
-      <DependentUpon>RegularFiguresMenu.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
