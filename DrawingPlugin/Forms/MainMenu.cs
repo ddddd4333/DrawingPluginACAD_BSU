@@ -44,7 +44,7 @@ namespace DrawingPlugin
 
         private void button5_Click(object sender, EventArgs e)
         {
-            RunACADCommand("InsertToLIST");
+            RunACADCommand("InsertFromLIST");
         }
 
         private void copyButton_Click(object sender, EventArgs e)

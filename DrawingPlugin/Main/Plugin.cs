@@ -41,7 +41,7 @@ namespace DrawingPlugin.Main{
             copy.ExportGeometry();
         }
 
-        [CommandMethod("InsertToLIST")]
+        [CommandMethod("InsertFromLIST")]
         public void InsertPolylinesFromDWG()
         {
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
