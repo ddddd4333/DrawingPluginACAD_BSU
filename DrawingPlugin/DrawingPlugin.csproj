@@ -63,6 +63,7 @@
     <Compile Include="Forms\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PreviewCommand.cs" />
     <Compile Include="Forms\RegularFiguresMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,7 +72,6 @@
     </Compile>
     <Compile Include="Main\MathematicalOperations.cs" />
     <Compile Include="Main\Plugin.cs" />
-    <Compile Include="PluginCommands\EntityData.cs" />
     <Compile Include="PluginCommands\InsertFunctionality.cs" />
     <Compile Include="PluginCommands\PluginCommandsMenues.cs" />
     <Compile Include="PluginCommands\PluginRegularFigures.cs" />
@@ -194,9 +194,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataBase\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
