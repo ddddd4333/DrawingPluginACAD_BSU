@@ -10,6 +10,8 @@ using System.Drawing;
 using System.IO;
 using System.Text.Json;
 using System.Windows.Forms;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
+using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace DrawingPlugin.PluginCommands
 {
@@ -18,7 +20,7 @@ namespace DrawingPlugin.PluginCommands
         [CommandMethod("PREVIEWDBELEMENTS")]
         public void PreviewDatabaseElements()
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = doc.Editor;
 
             try
@@ -92,7 +94,7 @@ namespace DrawingPlugin.PluginCommands
                         ed.WriteMessage("\nUse the BLOCKCOPY command to add entities to the database first.");
                         return;
                     }
-                    catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                    catch (Exception ex)
                     {
                         ed.WriteMessage($"\nError creating database: {ex.Message}");
                         return;
@@ -121,10 +123,10 @@ namespace DrawingPlugin.PluginCommands
                 // Create and show the preview form
                 using (PreviewForm previewForm = new PreviewForm(blocks, dbPath))
                 {
-                    Autodesk.AutoCAD.ApplicationServices.Application.ShowModalDialog(previewForm);
+                    Application.ShowModalDialog(previewForm);
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 ed.WriteMessage($"\nError: {ex.Message}");
 
@@ -196,10 +198,10 @@ namespace DrawingPlugin.PluginCommands
                                     CreatedAt = createdAt
                                 });
                             }
-                            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                            catch (Exception ex)
                             {
                                 // Log the error but continue with other records
-                                Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+                                Document doc = Application.DocumentManager.MdiActiveDocument;
                                 doc.Editor.WriteMessage($"\nError loading block: {ex.Message}");
                             }
                         }
@@ -212,7 +214,7 @@ namespace DrawingPlugin.PluginCommands
 
         private void GenerateThumbnails(List<DatabaseBlock> blocks)
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = doc.Editor;
 
             foreach (DatabaseBlock block in blocks)
@@ -252,7 +254,7 @@ namespace DrawingPlugin.PluginCommands
                         block.Thumbnail = RenderThumbnail(tempDb, extents ?? new Extents3d(), 150, 150);
                     }
                 }
-                catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                catch (Exception ex)
                 {
                     block.Thumbnail = CreateErrorThumbnail(150, 150, ex.Message);
                     ed.WriteMessage($"\nОшибка: {ex.Message}\n{ex.StackTrace}");
@@ -282,6 +284,7 @@ namespace DrawingPlugin.PluginCommands
                 tr.Commit();
             }
         }
+        
         // Упрощенные методы создания сущностей
         private Entity CreateEntity(Database targetDb, EntityData data)
         {
@@ -379,9 +382,9 @@ namespace DrawingPlugin.PluginCommands
                 ConfigureEntity(targetDb, arc);
                 return arc;
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
-                Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+                Document doc = Application.DocumentManager.MdiActiveDocument;
                 doc.Editor.WriteMessage($"\nОшибка создания дуги: {ex.Message}");
                 return null;
             }
@@ -516,85 +519,6 @@ namespace DrawingPlugin.PluginCommands
             return bitmap;
         }
 
-        private Entity CreateEntityFromData(EntityData entityData)
-        {
-            Entity entity = null;
-
-            try
-            {
-                switch (entityData.Type)
-                {
-                    case "Polyline":
-                        Polyline pline = new Polyline();
-                        if (entityData.Points != null)
-                        {
-                            for (int i = 0; i < entityData.Points.Count; i++)
-                            {
-                                double[] point = entityData.Points[i];
-                                double bulge = 0;
-                                if (entityData.Bulges != null && i < entityData.Bulges.Count)
-                                {
-                                    bulge = entityData.Bulges[i];
-                                }
-                                pline.AddVertexAt(i, new Point2d(point[0], point[1]), bulge, 0, 0);
-                            }
-                            if (entityData.IsClosed)
-                                pline.Closed = true;
-                            entity = pline;
-                        }
-                        break;
-
-                    case "Line":
-                        if (entityData.Points != null && entityData.Points.Count >= 2)
-                        {
-                            Line line = new Line(
-                                new Point3d(entityData.Points[0][0], entityData.Points[0][1], 0),
-                                new Point3d(entityData.Points[1][0], entityData.Points[1][1], 0));
-                            entity = line;
-                        }
-                        break;
-
-                    case "Arc":
-                        if (entityData.Center != null && entityData.Center.Length >= 2)
-                        {
-                            Arc arc = new Arc(
-                                new Point3d(entityData.Center[0], entityData.Center[1], 0),
-                                entityData.Radius,
-                                entityData.StartAngle,
-                                entityData.EndAngle);
-                            entity = arc;
-                        }
-                        break;
-
-                    case "Ellipse":
-                        if (entityData.Center != null && entityData.Center.Length >= 2 &&
-                            entityData.MajorAxis != null && entityData.MajorAxis.Length >= 2)
-                        {
-                            Point3d center = new Point3d(entityData.Center[0], entityData.Center[1], 0);
-                            Vector3d majorAxis = new Vector3d(entityData.MajorAxis[0], entityData.MajorAxis[1], 0);
-                            Ellipse ellipse = new Ellipse(center, Vector3d.ZAxis, majorAxis, entityData.RadiusRatio,
-                                entityData.StartParam, entityData.EndParam);
-                            entity = ellipse;
-                        }
-                        break;
-                }
-
-                if (entity != null)
-                {
-                    // Set common properties
-                    entity.Layer = "0"; // Default layer for preview
-                }
-            }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
-            {
-                // Log the error
-                Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-                doc.Editor.WriteMessage($"\nError creating entity of type {entityData.Type}: {ex.Message}");
-            }
-
-            return entity;
-        }
-
         private Extents3d? GetDatabaseExtents(Database db)
         {
             Extents3d? result = null;
@@ -641,7 +565,7 @@ namespace DrawingPlugin.PluginCommands
 
         private Bitmap RenderThumbnail(Database db, Extents3d extents, int width, int height)
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = doc.Editor;
 
             // Create a bitmap for the thumbnail with higher resolution for better quality
@@ -735,7 +659,7 @@ namespace DrawingPlugin.PluginCommands
                                     }
                                 }
                             }
-                            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                            catch (Exception ex)
                             {
                                 ed.WriteMessage($"\nError drawing entity: {ex.Message}");
                             }
@@ -746,7 +670,7 @@ namespace DrawingPlugin.PluginCommands
                     }
                 }
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
                 ed.WriteMessage($"\nError during rendering: {ex.Message}");
                 ed.WriteMessage($"\nStack Trace: {ex.StackTrace}");
@@ -865,6 +789,8 @@ namespace DrawingPlugin.PluginCommands
                     // For straight polylines, just use the original vertices
                     System.Drawing.Point[] points = new System.Drawing.Point[pline.NumberOfVertices];
             
+                      points = new System.Drawing.Point[pline.NumberOfVertices];
+            
                     for (int i = 0; i < pline.NumberOfVertices; i++)
                     {
                         Point2d pt = pline.GetPoint2dAt(i);
@@ -942,9 +868,9 @@ namespace DrawingPlugin.PluginCommands
                     g.DrawArc(pen, rect, startAngleDegrees, -sweepAngle); // Negative sweep angle to match AutoCAD direction
                 }
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
-                Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+                Document doc = Application.DocumentManager.MdiActiveDocument;
                 doc.Editor.WriteMessage($"\nОшибка отрисовки дуги: {ex.Message}");
             }
         }
@@ -994,208 +920,186 @@ namespace DrawingPlugin.PluginCommands
                 // Restore the original transform
                 g.Transform = originalTransform;
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
-                Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+                Document doc = Application.DocumentManager.MdiActiveDocument;
                 doc.Editor.WriteMessage($"\nОшибка отрисовки эллипса: {ex.Message}");
             }
         }
-    }
 
-    public class DatabaseBlock
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public List<EntityData> EntitiesData { get; set; }
-        public string CreatedAt { get; set; }
-        public Bitmap Thumbnail { get; set; }
-    }
-
-    public class EntityData
-    {
-        public string Type { get; set; }
-        public List<double[]> Points { get; set; }
-        public List<double> Bulges { get; set; }
-        public bool IsClosed { get; set; }
-        public double[] Center { get; set; }
-        public double Radius { get; set; }
-        public double StartAngle { get; set; }
-        public double EndAngle { get; set; }
-        public double[] MajorAxis { get; set; }
-        public double RadiusRatio { get; set; }
-        public double StartParam { get; set; }
-        public double EndParam { get; set; }
-    }
-
-    public class PreviewForm : Form
-    {
-        private List<DatabaseBlock> _blocks;
-        private FlowLayoutPanel _blocksPanel;
-        private Button _closeButton;
-        private Button _insertButton;
-        private string _dbPath;
-
-        public PreviewForm(List<DatabaseBlock> blocks, string dbPath)
+        // Method to insert a block at a specified point
+        public bool InsertBlockAtPoint(DatabaseBlock block, Point3d insertionPoint)
         {
-            _blocks = blocks;
-            _dbPath = dbPath;
-            InitializeComponent();
-            PopulateBlocksList();
-        }
-
-        private void InitializeComponent()
-        {
-            this.Text = "Database Blocks Preview";
-            this.Size = new Size(800, 600);
-            this.StartPosition = FormStartPosition.CenterScreen;
-
-            // Create main layout
-            TableLayoutPanel mainLayout = new TableLayoutPanel
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
+    
+            try
             {
-                Dock = DockStyle.Fill,
-                RowCount = 2,
-                ColumnCount = 1
-            };
-
-            mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 90F));
-            mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-
-            this.Controls.Add(mainLayout);
-
-            // Create blocks panel
-            _blocksPanel = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                AutoScroll = true,
-                FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight,
-                WrapContents = true,
-                Padding = new Padding(10)
-            };
-
-            mainLayout.Controls.Add(_blocksPanel, 0, 0);
-
-            // Create buttons panel
-            Panel buttonsPanel = new Panel
-            {
-                Dock = DockStyle.Fill
-            };
-
-            mainLayout.Controls.Add(buttonsPanel, 0, 1);
-
-            // Add database path label
-            Label dbPathLabel = new Label
-            {
-                Text = $"Database: {_dbPath}",
-                AutoSize = true,
-                Location = new Point(10, 15),
-                Anchor = AnchorStyles.Left | AnchorStyles.Top
-            };
-
-            buttonsPanel.Controls.Add(dbPathLabel);
-
-            // Add blocks count label
-            Label blocksCountLabel = new Label
-            {
-                Text = $"Blocks: {_blocks.Count}",
-                AutoSize = true,
-                Location = new Point(10, 35),
-                Anchor = AnchorStyles.Left | AnchorStyles.Top
-            };
-
-            buttonsPanel.Controls.Add(blocksCountLabel);
-
-            // Add buttons
-            _closeButton = new Button
-            {
-                Text = "Close",
-                Size = new Size(80, 30),
-                Location = new Point(buttonsPanel.Width - 90, 10),
-                Anchor = AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            _closeButton.Click += (s, e) => this.Close();
-            buttonsPanel.Controls.Add(_closeButton);
-
-            // Add a button for future "Insert" functionality
-            _insertButton = new Button
-            {
-                Text = "Insert (Future)",
-                Size = new Size(120, 30),
-                Location = new Point(buttonsPanel.Width - 220, 10),
-                Anchor = AnchorStyles.Right | AnchorStyles.Top,
-                Enabled = false // Disabled for now as per requirements
-            };
-
-            buttonsPanel.Controls.Add(_insertButton);
-        }
-
-        private void PopulateBlocksList()
-        {
-            foreach (DatabaseBlock block in _blocks)
-            {
-                // Create a panel for each block
-                Panel blockPanel = new Panel
+                // First, create a temporary database to calculate the block's extents
+                using (Database tempDb = new Database(true, true))
                 {
-                    Width = 180,
-                    Height = 200,
-                    Margin = new Padding(5),
-                    BorderStyle = BorderStyle.FixedSingle
-                };
-
-                // Add thumbnail - centered in the panel
-                PictureBox thumbnailBox = new PictureBox
+                    // Initialize the temporary database
+                    InitTempDatabase(tempDb);
+                    
+                    // Add all entities to the temporary database
+                    using (Transaction tr = tempDb.TransactionManager.StartTransaction())
+                    {
+                        BlockTableRecord modelSpace = (BlockTableRecord)tr.GetObject(
+                            SymbolUtilityServices.GetBlockModelSpaceId(tempDb),
+                            OpenMode.ForWrite
+                        );
+                        
+                        foreach (EntityData entityData in block.EntitiesData)
+                        {
+                            using (Entity entity = CreateEntity(tempDb, entityData))
+                            {
+                                if (entity != null)
+                                {
+                                    modelSpace.AppendEntity(entity);
+                                    tr.AddNewlyCreatedDBObject(entity, true);
+                                }
+                            }
+                        }
+                        
+                        tr.Commit();
+                    }
+                    
+                    // Get the extents of all entities in the temporary database
+                    Extents3d? extents = GetDatabaseExtents(tempDb);
+                    
+                    if (!extents.HasValue)
+                    {
+                        ed.WriteMessage("\nCould not determine block extents.");
+                        return false;
+                    }
+                    
+                    // Now insert the entities into the actual drawing
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        BlockTableRecord currentSpace = tr.GetObject(db.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
+                        
+                        // Calculate the insertion vector
+                        // We want the insertion point to be exactly where the user clicked
+                        Vector3d displacement = insertionPoint - extents.Value.MinPoint;
+                        
+                        ed.WriteMessage($"\nInsertion point: {insertionPoint.X}, {insertionPoint.Y}, {insertionPoint.Z}");
+                        ed.WriteMessage($"\nBlock min point: {extents.Value.MinPoint.X}, {extents.Value.MinPoint.Y}, {extents.Value.MinPoint.Z}");
+                        ed.WriteMessage($"\nDisplacement vector: {displacement.X}, {displacement.Y}, {displacement.Z}");
+                        
+                        foreach (EntityData entityData in block.EntitiesData)
+                        {
+                            Entity entity = CreateEntityFromData(entityData);
+                            
+                            if (entity != null)
+                            {
+                                // Apply the displacement to position the entity correctly
+                                entity.TransformBy(Matrix3d.Displacement(displacement));
+                                
+                                // Add the entity to the current space
+                                currentSpace.AppendEntity(entity);
+                                tr.AddNewlyCreatedDBObject(entity, true);
+                            }
+                        }
+                        
+                        tr.Commit();
+                    }
+                }
+                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ed.WriteMessage($"\nError inserting block: {ex.Message}");
+                if (ex.InnerException != null)
                 {
-                    Width = 150,
-                    Height = 150,
-                    Location = new Point((blockPanel.Width - 150) / 2, 10), // Center horizontally
-                    SizeMode = PictureBoxSizeMode.CenterImage, // Changed to CenterImage
-                    Image = block.Thumbnail ?? new Bitmap(150, 150),
-                    BackColor = Color.White
-                };
-
-                blockPanel.Controls.Add(thumbnailBox);
-
-                // Add name label
-                Label nameLabel = new Label
-                {
-                    Text = block.Name,
-                    Location = new Point(5, 165),
-                    Width = 170,
-                    Font = new System.Drawing.Font(this.Font, FontStyle.Bold),
-                    AutoEllipsis = true,
-                    TextAlign = ContentAlignment.MiddleCenter // Center text
-                };
-
-                blockPanel.Controls.Add(nameLabel);
-
-                // Add date label
-                Label dateLabel = new Label
-                {
-                    Text = block.CreatedAt,
-                    Location = new Point(5, 180),
-                    Width = 170,
-                    Font = new System.Drawing.Font(this.Font.FontFamily, 8),
-                    ForeColor = Color.Gray,
-                    TextAlign = ContentAlignment.MiddleCenter // Center text
-                };
-
-                blockPanel.Controls.Add(dateLabel);
-
-                // Add click handler for future selection functionality
-                blockPanel.Click += (s, e) => SelectBlock(block);
-                thumbnailBox.Click += (s, e) => SelectBlock(block);
-
-                // Add to flow layout
-                _blocksPanel.Controls.Add(blockPanel);
+                    ed.WriteMessage($"\nInner exception: {ex.InnerException.Message}");
+                }
+                ed.WriteMessage($"\nStack trace: {ex.StackTrace}");
+                return false;
             }
         }
 
-        private void SelectBlock(DatabaseBlock block)
+        // Helper method to create entities from EntityData
+        private Entity CreateEntityFromData(EntityData entityData)
         {
-            // This method is a placeholder for future functionality
-            // It would be used to select a block for insertion
-            MessageBox.Show($"Selected block: {block.Name}\nThis functionality will be implemented in the future.",
-                "Block Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Entity entity = null;
+            
+            try
+            {
+                switch (entityData.Type)
+                {
+                    case "Polyline":
+                        Polyline pline = new Polyline();
+                        if (entityData.Points != null)
+                        {
+                            for (int i = 0; i < entityData.Points.Count; i++)
+                            {
+                                double[] point = entityData.Points[i];
+                                double bulge = 0;
+                                if (entityData.Bulges != null && i < entityData.Bulges.Count)
+                                {
+                                    bulge = entityData.Bulges[i];
+                                }
+                                pline.AddVertexAt(i, new Point2d(point[0], point[1]), bulge, 0, 0);
+                            }
+                            if (entityData.IsClosed)
+                                pline.Closed = true;
+                            entity = pline;
+                        }
+                        break;
+                        
+                    case "Line":
+                        if (entityData.Points != null && entityData.Points.Count >= 2)
+                        {
+                            Line line = new Line(
+                                new Point3d(entityData.Points[0][0], entityData.Points[0][1], 0),
+                                new Point3d(entityData.Points[1][0], entityData.Points[1][1], 0));
+                            entity = line;
+                        }
+                        break;
+                        
+                    case "Arc":
+                        if (entityData.Center != null && entityData.Center.Length >= 2)
+                        {
+                            Arc arc = new Arc(
+                                new Point3d(entityData.Center[0], entityData.Center[1], 0),
+                                entityData.Radius,
+                                entityData.StartAngle,
+                                entityData.EndAngle);
+                            entity = arc;
+                        }
+                        break;
+                        
+                    case "Ellipse":
+                        if (entityData.Center != null && entityData.Center.Length >= 2 &&
+                            entityData.MajorAxis != null && entityData.MajorAxis.Length >= 2)
+                        {
+                            Point3d center = new Point3d(entityData.Center[0], entityData.Center[1], 0);
+                            Vector3d majorAxis = new Vector3d(entityData.MajorAxis[0], entityData.MajorAxis[1], 0);
+                            Ellipse ellipse = new Ellipse(center, Vector3d.ZAxis, majorAxis, entityData.RadiusRatio,
+                                entityData.StartParam, entityData.EndParam);
+                            entity = ellipse;
+                        }
+                        break;
+                }
+                
+                if (entity != null)
+                {
+                    // Set common properties
+                    entity.Layer = "0"; // Default layer
+                    entity.ColorIndex = 256; // ByLayer
+                    entity.Linetype = "ByLayer";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                Document doc = Application.DocumentManager.MdiActiveDocument;
+                doc.Editor.WriteMessage($"\nError creating entity of type {entityData.Type}: {ex.Message}");
+            }
+            
+            return entity;
         }
     }
 }

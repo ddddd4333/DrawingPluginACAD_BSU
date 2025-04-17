@@ -63,7 +63,8 @@
     <Compile Include="Forms\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PreviewCommand.cs" />
+    <Compile Include="Forms\PreviewCommand1.cs" />
+    <Compile Include="Forms\PreviewForm.cs" />
     <Compile Include="Forms\RegularFiguresMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,9 +73,11 @@
     </Compile>
     <Compile Include="Main\MathematicalOperations.cs" />
     <Compile Include="Main\Plugin.cs" />
+    <Compile Include="PluginCommands\DataBaseBlocks.cs" />
     <Compile Include="PluginCommands\InsertFunctionality.cs" />
     <Compile Include="PluginCommands\PluginCommandsMenues.cs" />
     <Compile Include="PluginCommands\PluginRegularFigures.cs" />
+    <Compile Include="PluginCommands\PreviewCommand.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
