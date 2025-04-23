@@ -18,13 +18,13 @@ namespace DrawingPlugin.PluginCommands
         private string _dbPath;
         private DatabaseBlock _selectedBlock = null;
         private Panel _selectedPanel = null;
-        private PreviewCommand _previewCommand;
+        private InsertCommands _insertCommands;
 
         public PreviewForm(List<DatabaseBlock> blocks, string dbPath)
         {
             _blocks = blocks;
             _dbPath = dbPath;
-            _previewCommand = new PreviewCommand();
+            _insertCommands = new InsertCommands();
             InitializeComponent();
             PopulateBlocksList();
         }
@@ -239,7 +239,7 @@ namespace DrawingPlugin.PluginCommands
                 Point3d insertionPoint = pPtRes.Value;
             
                 // Insert the block at the specified point
-                bool success = _previewCommand.InsertBlockAtPoint(_selectedBlock, insertionPoint);
+                bool success = _insertCommands.InsertBlockAtPoint(_selectedBlock, insertionPoint);
             
                 if (success)
                 {

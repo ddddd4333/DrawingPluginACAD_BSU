@@ -57,6 +57,12 @@
     <Compile Include="Forms\ChangeColour.Designer.cs">
       <DependentUpon>ChangeColour.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DBpathRequest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DBpathRequest.Designer.cs">
+      <DependentUpon>DBpathRequest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,7 +83,7 @@
     <Compile Include="PluginCommands\InsertFunctionality.cs" />
     <Compile Include="PluginCommands\PluginCommandsMenues.cs" />
     <Compile Include="PluginCommands\PluginRegularFigures.cs" />
-    <Compile Include="PluginCommands\PreviewCommand.cs" />
+    <Compile Include="PluginCommands\InsertCommands.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

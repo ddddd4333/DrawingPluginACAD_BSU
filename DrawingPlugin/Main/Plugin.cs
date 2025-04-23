@@ -44,7 +44,8 @@ namespace DrawingPlugin.Main{
         [CommandMethod("InsertFromLIST")]
         public void InsertFromLIST()
         {
-            
+           InsertCommands insert = new InsertCommands();
+           insert.PreviewDatabaseElements();
         }
 
         [CommandMethod("Square")]

@@ -49,6 +49,7 @@ namespace DrawingPlugin
             this.copyButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -83,7 +84,7 @@ namespace DrawingPlugin
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(509, 269);
+            this.button5.Location = new System.Drawing.Point(484, 269);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(159, 85);
             this.button5.TabIndex = 0;
@@ -103,7 +104,7 @@ namespace DrawingPlugin
             // 
             // copyButton
             // 
-            this.copyButton.Location = new System.Drawing.Point(509, 122);
+            this.copyButton.Location = new System.Drawing.Point(484, 122);
             this.copyButton.Name = "copyButton";
             this.copyButton.Size = new System.Drawing.Size(159, 85);
             this.copyButton.TabIndex = 0;
@@ -116,7 +117,7 @@ namespace DrawingPlugin
             this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.textBox1.BackColor = System.Drawing.Color.White;
             this.textBox1.Font = new System.Drawing.Font("Britannic Bold", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(166, 20);
+            this.textBox1.Location = new System.Drawing.Point(57, 20);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(373, 46);
@@ -132,11 +133,22 @@ namespace DrawingPlugin
             this.textBox2.Size = new System.Drawing.Size(100, 22);
             this.textBox2.TabIndex = 0;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(459, 20);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(184, 46);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "Зарегистрировать Базу Данных";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            // 
             // MainMenu
             // 
             this.BackColor = System.Drawing.Color.Firebrick;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(702, 373);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
@@ -150,8 +162,9 @@ namespace DrawingPlugin
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
+        private System.Windows.Forms.Button button4;
 
         #endregion
     }

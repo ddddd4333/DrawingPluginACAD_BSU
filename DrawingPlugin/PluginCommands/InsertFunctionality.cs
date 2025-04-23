@@ -15,18 +15,15 @@ namespace DrawingPlugin
 {
     public class InsertFunctionality
     {
-        // Command name to be used in AutoCAD
         [CommandMethod("BLOCKCOPY")]
         public void CopyBlocksToDatabase()
         {
-            // Get the current document and database
             Document doc = Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
             Editor ed = doc.Editor;
 
             try
             {
-                // Prompt user to select entities
                 PromptSelectionOptions pso = new PromptSelectionOptions();
                 pso.MessageForAdding = "Select entities to copy (lines, arcs, polylines) or press Enter when done: ";
                 pso.AllowDuplicates = false;

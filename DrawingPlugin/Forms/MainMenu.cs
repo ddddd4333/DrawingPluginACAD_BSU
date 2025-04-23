@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DrawingPlugin.Forms;
 
 namespace DrawingPlugin
 {
@@ -74,6 +75,13 @@ namespace DrawingPlugin
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            throw new System.NotImplementedException();
+            DBpathRequest dbpathRequest = new DBpathRequest();
+            Autodesk.AutoCAD.ApplicationServices.Application.ShowModelessDialog(dbpathRequest);
         }
     }
 }
