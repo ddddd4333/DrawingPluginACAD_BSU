@@ -122,13 +122,14 @@ namespace DrawingPlugin
             // 
             // textBox1
             // 
-            this.textBox1.Font = new System.Drawing.Font("Old English Text MT", 28F, System.Drawing.FontStyle.Bold);
+            this.textBox1.Font = new System.Drawing.Font("Onyx", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(359, 79);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(218, 64);
+            this.textBox1.Size = new System.Drawing.Size(218, 61);
             this.textBox1.TabIndex = 7;
             this.textBox1.Text = "ColorPad";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // ChangeColor
             // 
@@ -147,7 +148,6 @@ namespace DrawingPlugin
             this.Text = "ChangeColour";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

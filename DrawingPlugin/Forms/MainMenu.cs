@@ -79,7 +79,6 @@ namespace DrawingPlugin
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            throw new System.NotImplementedException();
             DBpathRequest dbpathRequest = new DBpathRequest();
             Autodesk.AutoCAD.ApplicationServices.Application.ShowModelessDialog(dbpathRequest);
         }

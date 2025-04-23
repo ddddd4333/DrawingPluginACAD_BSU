@@ -5,7 +5,7 @@ namespace DrawingPlugin.Forms;
 
 public partial class DBpathRequest : Form
 {
-    public string dbpath = "";
+    static public string dbpath = "";
     
     public DBpathRequest()
     {
@@ -18,7 +18,7 @@ public partial class DBpathRequest : Form
         {
             dbpath = textBox2.Text;
 
-            MessageBox.Show("Была зарегистрирована по маршруту: {dbpath}");
+            MessageBox.Show($"Была зарегистрирована по маршруту: {dbpath}");
         }
 
         else

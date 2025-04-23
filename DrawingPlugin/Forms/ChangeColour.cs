@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using DrawingPlugin.Main;
 using DrawingPlugin.PluginCommands;
 
 namespace DrawingPlugin
@@ -11,7 +12,7 @@ namespace DrawingPlugin
         public ChangeColor()
         {
             InitializeComponent();
-            textBox1.BackColor = Color.White;
+            textBox1.BackColor = MathematicalOperations.startColor(PluginCommandsMenus.color);
         }
 
         private void Red_Change(object sender, EventArgs e)
@@ -51,6 +52,10 @@ namespace DrawingPlugin
             PluginCommandsMenus.color = 7;
             textBox1.BackColor = Color.White;
         }
-        
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -9,6 +9,9 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Windows.Forms;
+using DrawingPlugin.Forms;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 
 namespace DrawingPlugin
@@ -33,14 +36,11 @@ namespace DrawingPlugin
                 if (psr.Status != PromptStatus.OK)
                     return;
 
-                // Process the selected entities
                 using (Transaction tr = db.TransactionManager.StartTransaction())
                 {
-                    // Get the selection set
                     SelectionSet ss = psr.Value;
                     List<EntityData> entitiesData = new List<EntityData>();
 
-                    // Process each selected entity
                     foreach (SelectedObject selObj in ss)
                     {
                         Entity ent = tr.GetObject(selObj.ObjectId, OpenMode.ForRead) as Entity;
@@ -48,7 +48,6 @@ namespace DrawingPlugin
 
                         EntityData entityData = null;
 
-                        // Process based on entity type
                         if (ent is Polyline)
                         {
                             entityData = ProcessPolyline(ent as Polyline);
@@ -61,7 +60,7 @@ namespace DrawingPlugin
                         {
                             entityData = ProcessArc(ent as Arc);
                         }
-                        else if (ent is Ellipse) // For elliptical arcs
+                        else if (ent is Ellipse)
                         {
                             entityData = ProcessEllipse(ent as Ellipse);
                         }
@@ -72,22 +71,21 @@ namespace DrawingPlugin
                         }
                     }
 
-                    // If we have data to save
                     if (entitiesData.Count > 0)
                     {
-                        // Prompt for database path
-                        PromptStringOptions pStrOpts = new PromptStringOptions("\nEnter path to SQLite database: ");
-                        pStrOpts.AllowSpaces = true;
-                        PromptResult pStrRes = ed.GetString(pStrOpts);
-                        
-                        if (pStrRes.Status == PromptStatus.OK)
+                        if (DBpathRequest.dbpath != "")
                         {
-                            string dbPath = pStrRes.StringResult;
-                            
-                            // Save to database
+                            string dbPath = DBpathRequest.dbpath;
+
+
                             SaveToDatabase(dbPath, entitiesData);
-                            
+
                             ed.WriteMessage($"\n{entitiesData.Count} entities saved to database successfully.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Зарегистрируйте базу данных!");
+                            return;
                         }
                     }
                     else

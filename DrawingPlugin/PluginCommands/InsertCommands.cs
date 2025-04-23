@@ -9,6 +9,8 @@ using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
 using System.Text.Json;
+using System.Windows.Forms;
+using DrawingPlugin.Forms;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
@@ -24,18 +26,12 @@ namespace DrawingPlugin.PluginCommands
 
             try
             {
-                PromptStringOptions pStrOpts = new PromptStringOptions("\nEnter full path to SQLite database file (e.g., C:\\Temp\\blocks.db): ");
-                pStrOpts.AllowSpaces = true;
-                PromptResult pStrRes = ed.GetString(pStrOpts);
 
-                if (pStrRes.Status != PromptStatus.OK)
-                    return;
-
-                string dbPath = pStrRes.StringResult;
+                string dbPath = DBpathRequest.dbpath;
                 
                 if (string.IsNullOrWhiteSpace(dbPath))
                 {
-                    ed.WriteMessage("\nInvalid database path.");
+                    MessageBox.Show("Зарегистрируйте базу данных!");
                     return;
                 }
                 
