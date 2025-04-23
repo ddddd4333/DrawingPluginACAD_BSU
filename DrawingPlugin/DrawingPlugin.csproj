@@ -193,6 +193,9 @@
     <EmbeddedResource Include="Forms\ChangeColour.resx">
       <DependentUpon>ChangeColour.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DBpathRequest.resx">
+      <DependentUpon>DBpathRequest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>

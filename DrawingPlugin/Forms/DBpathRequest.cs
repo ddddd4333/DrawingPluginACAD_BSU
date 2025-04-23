@@ -26,4 +26,8 @@ public partial class DBpathRequest : Form
             MessageBox.Show("Введите путь!");
         }
     }
+
+    private void textBox1_TextChanged(object sender, EventArgs e)
+    {
+    }
 }
