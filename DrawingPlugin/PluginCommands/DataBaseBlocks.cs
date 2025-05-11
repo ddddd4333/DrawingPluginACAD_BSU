@@ -4,7 +4,6 @@ using System.Drawing;
 
 namespace DrawingPlugin.PluginCommands
 {
-    // Class to represent a block stored in the database
     public class DatabaseBlock
     {
         public int Id { get; set; }
@@ -13,8 +12,7 @@ namespace DrawingPlugin.PluginCommands
         public string CreatedAt { get; set; }
         public Bitmap Thumbnail { get; set; }
     }
-
-    // Class to store entity data in JSON format
+    
     public class EntityData
     {
         public string Type { get; set; }

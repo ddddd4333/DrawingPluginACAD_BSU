@@ -43,7 +43,7 @@ partial class DBpathRequest
         this.textBox1.ReadOnly = true;
         this.textBox1.Size = new System.Drawing.Size(388, 22);
         this.textBox1.TabIndex = 0;
-        this.textBox1.Text = "Введите полный путь к базе данных";
+        this.textBox1.Text = "Enter the full ptah to a Data Base";
         this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
         this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
         // 

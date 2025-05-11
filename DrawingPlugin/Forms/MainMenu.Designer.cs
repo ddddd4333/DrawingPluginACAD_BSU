@@ -4,10 +4,6 @@ namespace DrawingPlugin
 {
     partial class MainMenu
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        /// 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
@@ -58,7 +54,7 @@ namespace DrawingPlugin
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(159, 85);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Draw Circle";
+            this.button1.Text = "Draw a Circle";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -68,7 +64,7 @@ namespace DrawingPlugin
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(159, 85);
             this.button2.TabIndex = 0;
-            this.button2.Text = "Draw Regular";
+            this.button2.Text = "Draw a Regular";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -78,7 +74,7 @@ namespace DrawingPlugin
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(159, 85);
             this.button3.TabIndex = 0;
-            this.button3.Text = "Draw Line";
+            this.button3.Text = "Draw a Line";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -88,7 +84,7 @@ namespace DrawingPlugin
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(159, 85);
             this.button5.TabIndex = 0;
-            this.button5.Text = "InsertToDB";
+            this.button5.Text = "Insert From the Data Base";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -98,7 +94,7 @@ namespace DrawingPlugin
             this.changeColor.Name = "changeColor";
             this.changeColor.Size = new System.Drawing.Size(159, 85);
             this.changeColor.TabIndex = 0;
-            this.changeColor.Text = "Change Color";
+            this.changeColor.Text = "Change the Color";
             this.changeColor.UseVisualStyleBackColor = true;
             this.changeColor.Click += new System.EventHandler(this.CallColorMenu);
             // 
@@ -108,7 +104,7 @@ namespace DrawingPlugin
             this.copyButton.Name = "copyButton";
             this.copyButton.Size = new System.Drawing.Size(159, 85);
             this.copyButton.TabIndex = 0;
-            this.copyButton.Text = "Copy To Data Base";
+            this.copyButton.Text = " Copy To the Date Base";
             this.copyButton.UseVisualStyleBackColor = true;
             this.copyButton.Click += new System.EventHandler(this.copyButton_Click);
             // 
@@ -139,7 +135,7 @@ namespace DrawingPlugin
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(184, 46);
             this.button4.TabIndex = 2;
-            this.button4.Text = "Зарегистрировать Базу Данных";
+            this.button4.Text = "register a Data Base";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
@@ -158,7 +154,7 @@ namespace DrawingPlugin
             this.Controls.Add(this.textBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainMenu";
-            this.Text = "Пример формы";
+            this.Text = "Main menu";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

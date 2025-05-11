@@ -18,12 +18,12 @@ public partial class DBpathRequest : Form
         {
             dbpath = textBox2.Text;
 
-            MessageBox.Show($"Была зарегистрирована по маршруту: {dbpath}");
+            MessageBox.Show($"DataBase have registered on the path: {dbpath}");
         }
 
         else
         {
-            MessageBox.Show("Введите путь!");
+            MessageBox.Show("Enter the path!");
         }
     }
 

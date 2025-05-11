@@ -4,9 +4,6 @@ namespace DrawingPlugin
 {
     partial class RegFiguresMenu : Form
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.Windows.Forms.Button triangleButton;
         private System.Windows.Forms.Button squareButton;
         private System.Windows.Forms.Button pentagonButton;
@@ -49,7 +46,7 @@ namespace DrawingPlugin
             this.triangleButton.Name = "triangleButton";
             this.triangleButton.Size = new System.Drawing.Size(159, 85);
             this.triangleButton.TabIndex = 0;
-            this.triangleButton.Text = "Draw Triangle";
+            this.triangleButton.Text = "Draw a Triangle";
             this.triangleButton.UseVisualStyleBackColor = true;
             this.triangleButton.Click += new System.EventHandler(this.triangleButton_Click);
             // 
@@ -59,7 +56,7 @@ namespace DrawingPlugin
             this.pentagonButton.Name = "pentagonButton";
             this.pentagonButton.Size = new System.Drawing.Size(159, 85);
             this.pentagonButton.TabIndex = 0;
-            this.pentagonButton.Text = "Draw Pentagon";
+            this.pentagonButton.Text = "Draw a Pentagon";
             this.pentagonButton.UseVisualStyleBackColor = true;
             this.pentagonButton.Click += new System.EventHandler(this.pentagonButton_Click);
             // 
@@ -69,7 +66,7 @@ namespace DrawingPlugin
             this.hexagonButton.Name = "hexagonButton";
             this.hexagonButton.Size = new System.Drawing.Size(159, 85);
             this.hexagonButton.TabIndex = 0;
-            this.hexagonButton.Text = "Draw Hexagon";
+            this.hexagonButton.Text = "Draw a Hexagon";
             this.hexagonButton.UseVisualStyleBackColor = true;
             this.hexagonButton.Click += new System.EventHandler(this.hexagonButton_Click);
             // 
@@ -79,7 +76,7 @@ namespace DrawingPlugin
             this.squareButton.Name = "squareButton";
             this.squareButton.Size = new System.Drawing.Size(159, 85);
             this.squareButton.TabIndex = 0;
-            this.squareButton.Text = "Draw Square";
+            this.squareButton.Text = "Draw a Square";
             this.squareButton.UseVisualStyleBackColor = true;
             this.squareButton.Click += new System.EventHandler(this.squareButton_Click);
             // 
@@ -97,7 +94,7 @@ namespace DrawingPlugin
             this.text1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.text1.TextChanged += new System.EventHandler(this.text1_TextChanged);
             // 
-            // Form1
+            // RegFiguresMenu
             // 
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(492, 396);
@@ -107,12 +104,11 @@ namespace DrawingPlugin
             this.Controls.Add(this.hexagonButton);
             this.Controls.Add(this.text1);
             this.ForeColor = System.Drawing.Color.DarkGoldenrod;
-            this.Name = "Form1";
-            this.Text = "Пример формы";
+            this.Name = "RegFiguresMenu";
+            this.Text = "Draw a Regular";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

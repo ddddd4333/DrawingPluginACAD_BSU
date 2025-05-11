@@ -28,7 +28,7 @@ namespace DrawingPlugin
             try
             {
                 PromptSelectionOptions pso = new PromptSelectionOptions();
-                pso.MessageForAdding = "Select entities to copy (lines, arcs, polylines) or press Enter when done: ";
+                pso.MessageForAdding = "Выбирите объекты для копирования (линии, дуги, полилинии): ";
                 pso.AllowDuplicates = false;
                 pso.AllowSubSelections = false;
 
@@ -84,7 +84,7 @@ namespace DrawingPlugin
                         }
                         else
                         {
-                            MessageBox.Show("Зарегистрируйте базу данных!");
+                            MessageBox.Show("Register a Data Base!");
                             return;
                         }
                     }

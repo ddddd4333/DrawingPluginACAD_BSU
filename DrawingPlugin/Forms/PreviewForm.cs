@@ -15,16 +15,21 @@ namespace DrawingPlugin.PluginCommands
         private FlowLayoutPanel _blocksPanel;
         private Button _closeButton;
         private Button _insertButton;
+        private Button _modifyButton;
         private string _dbPath;
         private DatabaseBlock _selectedBlock = null;
         private Panel _selectedPanel = null;
-        private InsertCommands _insertCommands;
+        private InsertCommands _previewCommand;
+        
+        // Properties for modification
+        private double _scale = 1.0;
+        private double _rotationAngle = 0.0;
 
         public PreviewForm(List<DatabaseBlock> blocks, string dbPath)
         {
             _blocks = blocks;
             _dbPath = dbPath;
-            _insertCommands = new InsertCommands();
+            _previewCommand = new InsertCommands();
             InitializeComponent();
             PopulateBlocksList();
         }
@@ -106,14 +111,27 @@ namespace DrawingPlugin.PluginCommands
             _insertButton = new Button
             {
                 Text = "Insert",
-                Size = new Size(120, 30),
-                Location = new Point(buttonsPanel.Width - 220, 10),
+                Size = new Size(80, 30),
+                Location = new Point(buttonsPanel.Width - 180, 10),
                 Anchor = AnchorStyles.Right | AnchorStyles.Top,
                 Enabled = false // Initially disabled until a block is selected
             };
 
             _insertButton.Click += InsertButton_Click;
             buttonsPanel.Controls.Add(_insertButton);
+            
+            // Add Modify button
+            _modifyButton = new Button
+            {
+                Text = "Modify",
+                Size = new Size(80, 30),
+                Location = new Point(buttonsPanel.Width - 270, 10),
+                Anchor = AnchorStyles.Right | AnchorStyles.Top,
+                Enabled = false // Initially disabled until a block is selected
+            };
+
+            _modifyButton.Click += ModifyButton_Click;
+            buttonsPanel.Controls.Add(_modifyButton);
         }
 
         private void PopulateBlocksList()
@@ -196,11 +214,36 @@ namespace DrawingPlugin.PluginCommands
             _selectedPanel.BackColor = Color.LightBlue;
             _selectedPanel.BorderStyle = BorderStyle.Fixed3D;
         
-            // Enable the Insert button
+            // Enable the Insert and Modify buttons
             _insertButton.Enabled = true;
+            _modifyButton.Enabled = true;
         
             // Show selection info
             this.Text = $"Database Blocks Preview - Selected: {_selectedBlock.Name}";
+            
+            // Reset modification parameters
+            _scale = 1.0;
+            _rotationAngle = 0.0;
+        }
+
+        private void ModifyButton_Click(object sender, EventArgs e)
+        {
+            if (_selectedBlock != null)
+            {
+                // Open the modify form
+                using (ModifyEntityForm modifyForm = new ModifyEntityForm(_selectedBlock, _previewCommand))
+                {
+                    if (modifyForm.ShowDialog() == DialogResult.OK)
+                    {
+                        // Get the modification parameters
+                        _scale = modifyForm.Scale;
+                        _rotationAngle = modifyForm.RotationAngle;
+                        
+                        // Update the form title to show that modifications will be applied
+                        this.Text = $"Database Blocks Preview - Selected: {_selectedBlock.Name} (Scale: {_scale}, Rotation: {_rotationAngle}°)";
+                    }
+                }
+            }
         }
 
         private void InsertButton_Click(object sender, EventArgs e)
@@ -238,8 +281,8 @@ namespace DrawingPlugin.PluginCommands
                 // Get the insertion point
                 Point3d insertionPoint = pPtRes.Value;
             
-                // Insert the block at the specified point
-                bool success = _insertCommands.InsertBlockAtPoint(_selectedBlock, insertionPoint);
+                // Insert the block at the specified point with modifications
+                bool success = _previewCommand.InsertBlockAtPoint(_selectedBlock, insertionPoint, _scale, _rotationAngle);
             
                 if (success)
                 {
