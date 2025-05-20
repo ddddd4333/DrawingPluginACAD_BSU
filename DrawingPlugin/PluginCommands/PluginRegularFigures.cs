@@ -13,13 +13,13 @@ namespace DrawingPlugin.PluginCommands
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Editor editor = doc.Editor;
 
-            PromptPointOptions pointQuestion = new PromptPointOptions("Выберите точку для построения квадрата");
+            PromptPointOptions pointQuestion = new PromptPointOptions("Select a point to build a square");
             PromptPointResult resPoint = editor.GetPoint(pointQuestion);
 
             double X = resPoint.Value.X;
             double Y = resPoint.Value.Y;
 
-            PromptDoubleOptions lengthQuestion = new PromptDoubleOptions("Введите длину стороны квадрата");
+            PromptDoubleOptions lengthQuestion = new PromptDoubleOptions("Enter the length of the side of the square");
             PromptDoubleResult reLength = editor.GetDouble(lengthQuestion);
 
             Database db = doc.Database;
@@ -53,13 +53,13 @@ namespace DrawingPlugin.PluginCommands
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Editor editor = doc.Editor;
 
-            PromptPointOptions pointQuestion = new PromptPointOptions("Выберите точку для построения квадрата");
+            PromptPointOptions pointQuestion = new PromptPointOptions("Select a point to build a triangle");
             PromptPointResult resPoint = editor.GetPoint(pointQuestion);
 
             double X = resPoint.Value.X;
             double Y = resPoint.Value.Y;
 
-            PromptDoubleOptions lengthQuestion = new PromptDoubleOptions("Введите длину стороны квадрата");
+            PromptDoubleOptions lengthQuestion = new PromptDoubleOptions("Enter the length of the side of the triangle");
             PromptDoubleResult reLength = editor.GetDouble(lengthQuestion);
 
             Database db = doc.Database;
@@ -94,13 +94,13 @@ namespace DrawingPlugin.PluginCommands
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Editor editor = doc.Editor;
 
-            PromptPointOptions pointQuestion = new PromptPointOptions("Выберите точку для построения квадрата");
+            PromptPointOptions pointQuestion = new PromptPointOptions("Select a point to build a pentagon");
             PromptPointResult resPoint = editor.GetPoint(pointQuestion);
 
             double X = resPoint.Value.X;
             double Y = resPoint.Value.Y;
 
-            PromptDoubleOptions lengthQuestion = new PromptDoubleOptions("Введите длину стороны квадрата");
+            PromptDoubleOptions lengthQuestion = new PromptDoubleOptions("Enter the length of the side of the pentagon");
             PromptDoubleResult reLength = editor.GetDouble(lengthQuestion);
 
             Database db = doc.Database;
@@ -136,13 +136,13 @@ namespace DrawingPlugin.PluginCommands
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Editor editor = doc.Editor;
 
-            PromptPointOptions pointQuestion = new PromptPointOptions("Выберите точку для построения квадрата");
+            PromptPointOptions pointQuestion = new PromptPointOptions("Select a point to build a hexagon");
             PromptPointResult resPoint = editor.GetPoint(pointQuestion);
 
             double X = resPoint.Value.X;
             double Y = resPoint.Value.Y;
 
-            PromptDoubleOptions lengthQuestion = new PromptDoubleOptions("Введите длину стороны квадрата");
+            PromptDoubleOptions lengthQuestion = new PromptDoubleOptions("Enter the length of the side of the hexagon");
             PromptDoubleResult reLength = editor.GetDouble(lengthQuestion);
 
             Database db = doc.Database;
@@ -178,9 +178,9 @@ namespace DrawingPlugin.PluginCommands
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Editor editor = doc.Editor;
             MathematicalOperations tranc = new MathematicalOperations();
-            PromptPointOptions fp = new PromptPointOptions("Введите первую точку");
+            PromptPointOptions fp = new PromptPointOptions("Select the first point");
             PromptPointResult rfp = editor.GetPoint(fp);
-            PromptPointOptions sp = new PromptPointOptions("Введите вторую точку");
+            PromptPointOptions sp = new PromptPointOptions("Select the second point");
             PromptPointResult rsp = editor.GetPoint(sp);
             Point2d firp = tranc.p3Dto2D(rfp.Value);
             Point2d secp = tranc.p3Dto2D(rsp.Value);
@@ -206,12 +206,12 @@ namespace DrawingPlugin.PluginCommands
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Editor editor = doc.Editor;
 
-            PromptPointResult resPoint = editor.GetPoint("Выберите точку: ");
+            PromptPointResult resPoint = editor.GetPoint("Select a point: ");
 
             Point3d center3D = resPoint.Value;
             Point2d center2D = new Point2d(center3D.X, center3D.Y);
 
-            PromptDoubleOptions len = new PromptDoubleOptions("Введите радиус:\n");
+            PromptDoubleOptions len = new PromptDoubleOptions("Enter the radius:\n");
             PromptDoubleResult resLen = editor.GetDouble(len);
 
             Database db = doc.Database;

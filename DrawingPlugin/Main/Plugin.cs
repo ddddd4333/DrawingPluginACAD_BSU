@@ -37,7 +37,7 @@ namespace DrawingPlugin.Main{
         [CommandMethod("CopyToDB")]
         public void CopyToDB()
         {
-            InsertFunctionality copy = new InsertFunctionality();
+            CopyFunctionality copy = new CopyFunctionality();
             copy.CopyBlocksToDatabase();
         }
 

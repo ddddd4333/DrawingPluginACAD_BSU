@@ -46,11 +46,12 @@ namespace DrawingPlugin
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(267, 269);
+            this.button1.Location = new System.Drawing.Point(271, 220);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(159, 85);
             this.button1.TabIndex = 0;
@@ -60,7 +61,7 @@ namespace DrawingPlugin
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(57, 122);
+            this.button2.Location = new System.Drawing.Point(57, 89);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(159, 85);
             this.button2.TabIndex = 0;
@@ -70,7 +71,7 @@ namespace DrawingPlugin
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(267, 122);
+            this.button3.Location = new System.Drawing.Point(271, 89);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(159, 85);
             this.button3.TabIndex = 0;
@@ -80,7 +81,7 @@ namespace DrawingPlugin
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(484, 269);
+            this.button5.Location = new System.Drawing.Point(484, 220);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(159, 85);
             this.button5.TabIndex = 0;
@@ -90,7 +91,7 @@ namespace DrawingPlugin
             // 
             // changeColor
             // 
-            this.changeColor.Location = new System.Drawing.Point(57, 269);
+            this.changeColor.Location = new System.Drawing.Point(57, 220);
             this.changeColor.Name = "changeColor";
             this.changeColor.Size = new System.Drawing.Size(159, 85);
             this.changeColor.TabIndex = 0;
@@ -100,7 +101,7 @@ namespace DrawingPlugin
             // 
             // copyButton
             // 
-            this.copyButton.Location = new System.Drawing.Point(484, 122);
+            this.copyButton.Location = new System.Drawing.Point(484, 89);
             this.copyButton.Name = "copyButton";
             this.copyButton.Size = new System.Drawing.Size(159, 85);
             this.copyButton.TabIndex = 0;
@@ -135,15 +136,27 @@ namespace DrawingPlugin
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(184, 46);
             this.button4.TabIndex = 2;
-            this.button4.Text = "register a Data Base";
+            this.button4.Text = "The path to the database";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(57, 342);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(159, 80);
+            this.button6.TabIndex = 3;
+            this.button6.Text = "Calculate an area of the Block";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // MainMenu
             // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Firebrick;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(702, 373);
+            this.ClientSize = new System.Drawing.Size(702, 450);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
@@ -159,6 +172,8 @@ namespace DrawingPlugin
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button button6;
 
         private System.Windows.Forms.Button button4;
 

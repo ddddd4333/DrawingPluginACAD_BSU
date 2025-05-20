@@ -1,6 +1,4 @@
-﻿
-
-namespace DrawingPlugin.PluginCommands
+﻿namespace DrawingPlugin.PluginCommands
 {
     public class PluginCommandsMenus
     {
@@ -19,7 +17,7 @@ namespace DrawingPlugin.PluginCommands
         }
         public static void Initialize() {
             var editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor;
-            editor.WriteMessage("GOOD!!!!\n");
+            editor.WriteMessage("Plugin started\n");
 
             MainMenu Form = new MainMenu();
             Autodesk.AutoCAD.ApplicationServices.Application.ShowModelessDialog(Form);

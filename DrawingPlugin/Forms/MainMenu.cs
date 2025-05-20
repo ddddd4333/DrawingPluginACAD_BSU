@@ -60,7 +60,7 @@ namespace DrawingPlugin
                 Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument.SendStringToExecute(command + " ", true, false, true);
             }
             catch (Exception ex) {
-                MessageBox.Show("Ошибка выполнения команды: " + ex.Message);
+                MessageBox.Show("Command execution error: " + ex.Message);
             }
         }
         private void textBox1_TextChanged_1(object sender, EventArgs e)
@@ -81,6 +81,11 @@ namespace DrawingPlugin
         {
             DBpathRequest dbpathRequest = new DBpathRequest();
             Autodesk.AutoCAD.ApplicationServices.Application.ShowModelessDialog(dbpathRequest);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            RunACADCommand("CALCULATEAREA");
         }
     }
 }

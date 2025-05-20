@@ -6,6 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Data.SQLite;
+
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
+using Font = System.Drawing.Font;
 
 namespace DrawingPlugin.PluginCommands
 {
@@ -20,6 +24,9 @@ namespace DrawingPlugin.PluginCommands
         private DatabaseBlock _selectedBlock = null;
         private Panel _selectedPanel = null;
         private InsertCommands _previewCommand;
+        private Button _deleteButton;
+        private Label _dbPathLabel;
+        private Label _blocksCountLabel;
         
         // Properties for modification
         private double _scale = 1.0;
@@ -37,8 +44,12 @@ namespace DrawingPlugin.PluginCommands
         private void InitializeComponent()
         {
             this.Text = "Database Blocks Preview";
-            this.Size = new Size(800, 600);
+            this.Size = new Size(1000, 700); // Увеличенный размер
+            this.MinimumSize = new Size(800, 600); // Минимальный размер
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.Sizable; // Изменяемый размер
+            this.MaximizeBox = true;
+            this.MinimizeBox = true;
 
             // Create main layout
             TableLayoutPanel mainLayout = new TableLayoutPanel
@@ -48,8 +59,8 @@ namespace DrawingPlugin.PluginCommands
                 ColumnCount = 1
             };
 
-            mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 90F));
-            mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 85F)); // Уменьшаем долю для блоков
+            mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 15F)); // Увеличиваем долю для кнопок
 
             this.Controls.Add(mainLayout);
 
@@ -60,90 +71,129 @@ namespace DrawingPlugin.PluginCommands
                 AutoScroll = true,
                 FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight,
                 WrapContents = true,
-                Padding = new Padding(10)
+                Padding = new Padding(15) // Увеличенные отступы
             };
 
             mainLayout.Controls.Add(_blocksPanel, 0, 0);
 
-            // Create buttons panel
-            Panel buttonsPanel = new Panel
+            // Create buttons panel - используем TableLayoutPanel для лучшего размещения
+            TableLayoutPanel buttonsPanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                RowCount = 2,
+                ColumnCount = 5,
+                Padding = new Padding(10)
             };
+
+            buttonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            buttonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            
+            buttonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F)); // Для меток
+            buttonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17.5F)); // Для кнопки Delete
+            buttonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17.5F)); // Для кнопки Modify
+            buttonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17.5F)); // Для кнопки Insert
+            buttonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17.5F)); // Для кнопки Close
 
             mainLayout.Controls.Add(buttonsPanel, 0, 1);
 
             // Add database path label
-            Label dbPathLabel = new Label
+            _dbPathLabel = new Label
             {
                 Text = $"Database: {_dbPath}",
                 AutoSize = true,
-                Location = new Point(10, 15),
-                Anchor = AnchorStyles.Left | AnchorStyles.Top
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Font = new Font(this.Font.FontFamily, 9),
+                AutoEllipsis = true // Добавляем многоточие для длинных путей
             };
 
-            buttonsPanel.Controls.Add(dbPathLabel);
+            buttonsPanel.Controls.Add(_dbPathLabel, 0, 0);
+            buttonsPanel.SetColumnSpan(_dbPathLabel, 5); // Растягиваем на все колонки
 
             // Add blocks count label
-            Label blocksCountLabel = new Label
+            _blocksCountLabel = new Label
             {
                 Text = $"Blocks: {_blocks.Count}",
                 AutoSize = true,
-                Location = new Point(10, 35),
-                Anchor = AnchorStyles.Left | AnchorStyles.Top
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Font = new Font(this.Font.FontFamily, 9)
             };
 
-            buttonsPanel.Controls.Add(blocksCountLabel);
+            buttonsPanel.Controls.Add(_blocksCountLabel, 0, 1);
 
-            // Add buttons
-            _closeButton = new Button
+            // Add Delete button
+            _deleteButton = new Button
             {
-                Text = "Close",
-                Size = new Size(80, 30),
-                Location = new Point(buttonsPanel.Width - 90, 10),
-                Anchor = AnchorStyles.Right | AnchorStyles.Top
+                Text = "Delete",
+                Size = new Size(110, 35), // Увеличенный размер
+                Dock = DockStyle.Fill,
+                Margin = new Padding(5),
+                Enabled = false, // Initially disabled until a block is selected
+                Font = new Font(this.Font.FontFamily, 10) // Увеличенный шрифт
             };
 
-            _closeButton.Click += (s, e) => this.Close();
-            buttonsPanel.Controls.Add(_closeButton);
+            _deleteButton.Click += DeleteButton_Click;
+            buttonsPanel.Controls.Add(_deleteButton, 1, 1);
 
-            // Add Insert button - now enabled but will be disabled until a block is selected
-            _insertButton = new Button
-            {
-                Text = "Insert",
-                Size = new Size(80, 30),
-                Location = new Point(buttonsPanel.Width - 180, 10),
-                Anchor = AnchorStyles.Right | AnchorStyles.Top,
-                Enabled = false // Initially disabled until a block is selected
-            };
-
-            _insertButton.Click += InsertButton_Click;
-            buttonsPanel.Controls.Add(_insertButton);
-            
             // Add Modify button
             _modifyButton = new Button
             {
                 Text = "Modify",
-                Size = new Size(80, 30),
-                Location = new Point(buttonsPanel.Width - 270, 10),
-                Anchor = AnchorStyles.Right | AnchorStyles.Top,
-                Enabled = false // Initially disabled until a block is selected
+                Size = new Size(110, 35), // Увеличенный размер
+                Dock = DockStyle.Fill,
+                Margin = new Padding(5),
+                Enabled = false, // Initially disabled until a block is selected
+                Font = new Font(this.Font.FontFamily, 10) // Увеличенный шрифт
             };
 
             _modifyButton.Click += ModifyButton_Click;
-            buttonsPanel.Controls.Add(_modifyButton);
+            buttonsPanel.Controls.Add(_modifyButton, 2, 1);
+
+            // Add Insert button
+            _insertButton = new Button
+            {
+                Text = "Insert",
+                Size = new Size(110, 35), // Увеличенный размер
+                Dock = DockStyle.Fill,
+                Margin = new Padding(5),
+                Enabled = false, // Initially disabled until a block is selected
+                Font = new Font(this.Font.FontFamily, 10) // Увеличенный шрифт
+            };
+
+            _insertButton.Click += InsertButton_Click;
+            buttonsPanel.Controls.Add(_insertButton, 3, 1);
+
+            // Add Close button
+            _closeButton = new Button
+            {
+                Text = "Close",
+                Size = new Size(110, 35), // Увеличенный размер
+                Dock = DockStyle.Fill,
+                Margin = new Padding(5),
+                Font = new Font(this.Font.FontFamily, 10) // Увеличенный шрифт
+            };
+
+            _closeButton.Click += (s, e) => this.Close();
+            buttonsPanel.Controls.Add(_closeButton, 4, 1);
+
+            // Обработчик изменения размера формы для обновления меток
+            this.Resize += (s, e) => {
+                _dbPathLabel.Text = $"Database: {_dbPath}";
+                _blocksCountLabel.Text = $"Blocks: {_blocks.Count}";
+            };
         }
 
         private void PopulateBlocksList()
         {
             foreach (DatabaseBlock block in _blocks)
             {
-                // Create a panel for each block
+                // Create a panel for each block - увеличиваем размер
                 Panel blockPanel = new Panel
                 {
-                    Width = 180,
-                    Height = 200,
-                    Margin = new Padding(5),
+                    Width = 220, // Увеличенная ширина
+                    Height = 240, // Увеличенная высота
+                    Margin = new Padding(10), // Увеличенные отступы
                     BorderStyle = BorderStyle.FixedSingle,
                     Tag = block // Store the block in the Tag property for easy access
                 };
@@ -151,24 +201,25 @@ namespace DrawingPlugin.PluginCommands
                 // Add thumbnail - centered in the panel
                 PictureBox thumbnailBox = new PictureBox
                 {
-                    Width = 150,
-                    Height = 150,
-                    Location = new Point((blockPanel.Width - 150) / 2, 10), // Center horizontally
-                    SizeMode = PictureBoxSizeMode.CenterImage, // Changed to CenterImage
-                    Image = block.Thumbnail ?? new Bitmap(150, 150),
+                    Width = 180, // Увеличенная ширина
+                    Height = 180, // Увеличенная высота
+                    Location = new Point((blockPanel.Width - 180) / 2, 10), // Center horizontally
+                    SizeMode = PictureBoxSizeMode.Zoom, // Изменено на Zoom для лучшего масштабирования
+                    Image = block.Thumbnail ?? new Bitmap(180, 180),
                     BackColor = Color.White,
                     Tag = block // Store the block in the Tag property for easy access
                 };
 
                 blockPanel.Controls.Add(thumbnailBox);
 
-                // Add name label
+                // Add name label - увеличиваем размер шрифта
                 Label nameLabel = new Label
                 {
                     Text = block.Name,
-                    Location = new Point(5, 165),
-                    Width = 170,
-                    Font = new System.Drawing.Font(this.Font, FontStyle.Bold),
+                    Location = new Point(5, 195),
+                    Width = 210, // Увеличенная ширина
+                    Height = 20, // Фиксированная высота
+                    Font = new System.Drawing.Font(this.Font.FontFamily, 10, FontStyle.Bold), // Увеличенный шрифт
                     AutoEllipsis = true,
                     TextAlign = ContentAlignment.MiddleCenter // Center text
                 };
@@ -179,10 +230,12 @@ namespace DrawingPlugin.PluginCommands
                 Label dateLabel = new Label
                 {
                     Text = block.CreatedAt,
-                    Location = new Point(5, 180),
-                    Width = 170,
+                    Location = new Point(5, 215),
+                    Width = 210, // Увеличенная ширина
+                    Height = 20, // Фиксированная высота
                     Font = new System.Drawing.Font(this.Font.FontFamily, 8),
                     ForeColor = Color.Gray,
+                    AutoEllipsis = true,
                     TextAlign = ContentAlignment.MiddleCenter // Center text
                 };
 
@@ -191,6 +244,8 @@ namespace DrawingPlugin.PluginCommands
                 // Add click handler for selection functionality
                 blockPanel.Click += (s, e) => SelectBlock(blockPanel);
                 thumbnailBox.Click += (s, e) => SelectBlock(blockPanel);
+                nameLabel.Click += (s, e) => SelectBlock(blockPanel);
+                dateLabel.Click += (s, e) => SelectBlock(blockPanel);
 
                 // Add to flow layout
                 _blocksPanel.Controls.Add(blockPanel);
@@ -217,6 +272,7 @@ namespace DrawingPlugin.PluginCommands
             // Enable the Insert and Modify buttons
             _insertButton.Enabled = true;
             _modifyButton.Enabled = true;
+            _deleteButton.Enabled = true;
         
             // Show selection info
             this.Text = $"Database Blocks Preview - Selected: {_selectedBlock.Name}";
@@ -230,8 +286,8 @@ namespace DrawingPlugin.PluginCommands
         {
             if (_selectedBlock != null)
             {
-                // Open the modify form
-                using (ModifyEntityForm modifyForm = new ModifyEntityForm(_selectedBlock, _previewCommand))
+                // Open the modify form - передаем ссылку на текущую форму
+                using (ModifyEntityForm modifyForm = new ModifyEntityForm(_selectedBlock, _previewCommand, this))
                 {
                     if (modifyForm.ShowDialog() == DialogResult.OK)
                     {
@@ -243,6 +299,81 @@ namespace DrawingPlugin.PluginCommands
                         this.Text = $"Database Blocks Preview - Selected: {_selectedBlock.Name} (Scale: {_scale}, Rotation: {_rotationAngle}°)";
                     }
                 }
+            }
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            if (_selectedBlock != null)
+            {
+                // Confirm deletion
+                DialogResult result = MessageBox.Show(
+                    $"Are you sure you want to delete the block '{_selectedBlock.Name}'?",
+                    "Confirm Deletion",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+                    
+                if (result == DialogResult.Yes)
+                {
+                    // Delete the block from the database
+                    if (DeleteBlockFromDatabase(_selectedBlock.Id))
+                    {
+                        // Remove the block from the list
+                        _blocks.Remove(_selectedBlock);
+                        
+                        // Remove the panel from the UI
+                        if (_selectedPanel != null)
+                        {
+                            _blocksPanel.Controls.Remove(_selectedPanel);
+                            _selectedPanel = null;
+                        }
+                        
+                        // Reset selection
+                        _selectedBlock = null;
+                        
+                        // Disable buttons
+                        _insertButton.Enabled = false;
+                        _modifyButton.Enabled = false;
+                        _deleteButton.Enabled = false;
+                        
+                        // Update the form title
+                        this.Text = "Database Blocks Preview";
+                        
+                        // Update blocks count label
+                        _blocksCountLabel.Text = $"Blocks: {_blocks.Count}";
+                    }
+                }
+            }
+        }
+
+        // Добавить метод для удаления блока из базы данных
+        private bool DeleteBlockFromDatabase(int blockId)
+        {
+            try
+            {
+                string connectionString = $"Data Source={_dbPath};Version=3;";
+                
+                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open();
+                    
+                    using (SQLiteCommand command = new SQLiteCommand(
+                        "DELETE FROM Entities WHERE Id = @Id",
+                        connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", blockId);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Document doc = Application.DocumentManager.MdiActiveDocument;
+                doc.Editor.WriteMessage($"\nError deleting block: {ex.Message}");
+                MessageBox.Show($"Error deleting block: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
@@ -261,9 +392,9 @@ namespace DrawingPlugin.PluginCommands
         private void InsertSelectedBlock()
         {
             // Get the active document and editor
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Document doc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = doc.Editor;
-        
+
             try
             {
                 // Prompt the user to specify an insertion point

@@ -21,7 +21,7 @@ namespace DrawingPlugin
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка выполнения команды: " + ex.Message);
+                MessageBox.Show("Command execution error:" + ex.Message);
             }
         }
         public RegFiguresMenu()

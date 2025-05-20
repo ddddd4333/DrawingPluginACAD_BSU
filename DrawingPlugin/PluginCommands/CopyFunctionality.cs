@@ -16,7 +16,7 @@ using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace DrawingPlugin
 {
-    public class InsertFunctionality
+    public class CopyFunctionality
     {
         [CommandMethod("BLOCKCOPY")]
         public void CopyBlocksToDatabase()
@@ -28,7 +28,7 @@ namespace DrawingPlugin
             try
             {
                 PromptSelectionOptions pso = new PromptSelectionOptions();
-                pso.MessageForAdding = "Выбирите объекты для копирования (линии, дуги, полилинии): ";
+                pso.MessageForAdding = "Select objects to copy (lines, arcs, polylines): ";
                 pso.AllowDuplicates = false;
                 pso.AllowSubSelections = false;
 
@@ -84,7 +84,7 @@ namespace DrawingPlugin
                         }
                         else
                         {
-                            MessageBox.Show("Register a Data Base!");
+                            MessageBox.Show("Enter the full path to a database");
                             return;
                         }
                     }
@@ -220,6 +220,7 @@ namespace DrawingPlugin
                 
                 // Serialize the entities data to JSON
                 string jsonData = JsonSerializer.Serialize(entitiesData);
+                
                 
                 // Insert the data
                 using (SQLiteCommand command = new SQLiteCommand(

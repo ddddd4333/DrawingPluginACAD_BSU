@@ -52,11 +52,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Forms\AreaOfBlock.cs" />
-    <Compile Include="Forms\ChangeColour.cs">
+    <Compile Include="Forms\ChangeColor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ChangeColour.Designer.cs">
-      <DependentUpon>ChangeColour.cs</DependentUpon>
+    <Compile Include="Forms\ChangeColor.Designer.cs">
+      <DependentUpon>ChangeColor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\DBpathRequest.cs">
       <SubType>Form</SubType>
@@ -82,7 +82,7 @@
     <Compile Include="Main\MathematicalOperations.cs" />
     <Compile Include="Main\Plugin.cs" />
     <Compile Include="PluginCommands\DataBaseBlocks.cs" />
-    <Compile Include="PluginCommands\InsertFunctionality.cs" />
+    <Compile Include="PluginCommands\CopyFunctionality.cs" />
     <Compile Include="PluginCommands\PluginCommandsMenues.cs" />
     <Compile Include="PluginCommands\PluginRegularFigures.cs" />
     <Compile Include="PluginCommands\InsertCommands.cs" />
@@ -192,8 +192,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\ChangeColour.resx">
-      <DependentUpon>ChangeColour.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ChangeColor.resx">
+      <DependentUpon>ChangeColor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DBpathRequest.resx">
       <DependentUpon>DBpathRequest.cs</DependentUpon>

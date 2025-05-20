@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.Json;
 using System.Windows.Forms;
+using DrawingPlugin.PluginCommands;
 
 namespace ACAD
 {
@@ -216,7 +217,7 @@ namespace ACAD
             {
                 try
                 {
-                    ed.WriteMessage($"\nГенерация миниатюры для блока: {block.Name}");
+                    ed.WriteMessage($"\nGenerating a thumbnail for a block: {block.Name}");
 
                     using (Database tempDb = new Database(true, true))
                     {
@@ -251,7 +252,7 @@ namespace ACAD
                 catch (Autodesk.AutoCAD.Runtime.Exception ex)
                 {
                     block.Thumbnail = CreateErrorThumbnail(150, 150, ex.Message);
-                    ed.WriteMessage($"\nОшибка: {ex.Message}\n{ex.StackTrace}");
+                    ed.WriteMessage($"\nError: {ex.Message}\n{ex.StackTrace}");
                 }
             }
         }
@@ -292,7 +293,7 @@ namespace ACAD
                 if (entity != null)
                 {
                     entity.Layer = "0";
-                    entity.ColorIndex = 7;
+                    entity.ColorIndex = PluginCommandsMenus.color;
                     entity.Linetype = "ByLayer";
                     entity.SetDatabaseDefaults(targetDb);
                 }
@@ -372,7 +373,7 @@ namespace ACAD
             catch (Autodesk.AutoCAD.Runtime.Exception ex)
             {
                 Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-                doc.Editor.WriteMessage($"\nОшибка создания дуги: {ex.Message}");
+                doc.Editor.WriteMessage($"\nArc creation error: {ex.Message}");
                 return null;
             }
         }
@@ -419,7 +420,7 @@ namespace ACAD
             entity.SetDatabaseDefaults(targetDb);
             
             entity.Layer = "0";
-            entity.ColorIndex = 7;
+            entity.ColorIndex = PluginCommandsMenus.color;
             entity.Linetype = "ByLayer";
             entity.LinetypeScale = 1.0;
         }
@@ -927,7 +928,7 @@ namespace ACAD
             catch (Autodesk.AutoCAD.Runtime.Exception ex)
             {
                 Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-                doc.Editor.WriteMessage($"\nОшибка отрисовки эллипса: {ex.Message}");
+                doc.Editor.WriteMessage($"\nEllipse rendering error: {ex.Message}");
             }
         }
     }
